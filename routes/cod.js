@@ -4,9 +4,9 @@ const bodyParser = require("body-parser");
 const Image = require("../models/Image");
 const config = require("../config/authconfig");
 const User = require("../models/User");
-const COD = require("../models/COD");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+
 
 const {
   json
@@ -134,6 +134,16 @@ router.put("/updateUser/:_id", async (req, res) => {
           message: "Update Failed"
         });
       } 
+      if (req.body.Username == undefined ||
+        req.body.isVipMember == undefined || 
+        req.body.gmailUser == undefined ||
+        req.body.addressUser == undefined ||
+        req.body.phoneUser == undefined) {
+       return res.json({
+         message: "Thông tin rỗng"
+       });
+     } 
+      else {
         user.isVipMember = req.body.isVipMember,
         user.Username = req.body.Username,
         user.profilePictureUser = req.body.profilePictureUser,
@@ -145,7 +155,7 @@ router.put("/updateUser/:_id", async (req, res) => {
             return res.status(200).json({
               message: "Update Completely"
             });
-
+          }
     });
   } catch (error) {
     console.log(error);
@@ -202,21 +212,33 @@ router.put("/unblockBlacklist/:phoneUser", async(req, res) => {
   });
 
   //Them Blacklist
-router.post("/insertBank", async (req, res) => {
+router.post("/insertBlackList", async (req, res) => {
   try {
-      let newBank = {
-        NameBank: req.body.NameBank,
-        NameHolder: req.body.NameHolder,
-        AccountNumber: req.body.AccountNumber,
+      let newBlacklist = {
+        numberPhoneBlack: req.body.numberPhoneBlack,
+        addressUser: req.body.addressUser,
+        Username: req.body.Username,
+        profilePictureUser: req.body.profilePictureUser,
+        Number: req.body.Number,
+
       };
-      COD.create(newBank, (err, banks) => {
+      if (req.body.numberPhoneBlack == undefined ||
+        req.body.Username == undefined ||
+        req.body.addressUser == undefined ||
+        req.body.profilePictureUser == undefined) {
+       return res.json({
+         message: "Thông tin rỗng"
+       });
+     } else{
+      Blacklist.create(newBlacklist, (err, blacklist) => {
         if (err) {
           res.status(401).json(err);
         } else {
-          banks.save();
+          blacklist.save();
           return res.status(200).json("Inserted");
         }
       });
+    }
   } catch (error) {
     res.status(404).json(error);
     console.log(error);

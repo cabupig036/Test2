@@ -7,8 +7,6 @@ module.exports = function(toUser, subject, text) {
         auth: {
             user: "DH51805899@student.stu.edu.vn",
             pass: "181100Covid"
-                // user: "ningendo.shinra03090@gmail.com",
-                // pass: "dxfwloobeighjghp"
         }
     });
 
