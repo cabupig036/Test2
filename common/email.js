@@ -5,15 +5,15 @@ module.exports = function(toUser, subject, text) {
         host: "smtp.gmail.com",
         port: 465,
         auth: {
-            user: "DH51805899@student.stu.edu.vn",
-            pass: "181100Covid"
+            user: "DH51805679@student.stu.edu.vn",
+            pass: "Covid*1009@"
         }
     });
 
     message = {
-        from: "admin@bookStore.com",
+        from: "admin@delivery.com",
         to: toUser,
-        subject: subject,
+        subject: "Thông báo đến từ Admin Website dịch vụ giao hàng",
         html: text
     }
 

@@ -4,10 +4,17 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
+const ImageRouter = require("./routes/images");
 const userRoute = require("./routes/users");
-
+const shipperRoute = require("./routes/shipper");
+const blogRoute = require("./routes/blog");
+const staffRoute = require("./routes/staff");
+const supportRoute = require("./routes/support");
+const bodyParser = require("body-parser");
+const authRoute = require("./routes/auth");
+const blackListRoute = require("./routes/blacklist");
+const oderRoute = require("./routes/oder");
 
 
 
@@ -41,6 +48,15 @@ app.use(
 );
 
 app.use("/api/users", userRoute);
+app.use("/api/users", userRoute);
+app.use("/api/shipper", shipperRoute);
+app.use("/api/blog", blogRoute);
+app.use("/api/staff", staffRoute);
+app.use("/api/support", supportRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/blacklist", blackListRoute);
+app.use("/api/oder", oderRoute);
+app.use("/api/image", ImageRouter);
 
 var server = app.listen(port, () => {
     console.log("Backend server is running!");
