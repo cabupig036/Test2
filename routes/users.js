@@ -125,7 +125,7 @@ router.get("/deleteUser/:_id", async (req, res) => {
 router.put("/updateUser/:_id", async (req, res) => {
   try {
     User.findOne({
-      gmailUser: req.params.gmailUser
+      _id: req.params._id
     }).exec((err, user) => {
       if (err) {
         res.json({
