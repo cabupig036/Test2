@@ -82,7 +82,6 @@ router.post("/insertUser", async (req, res) => {
         }
       });
       let newUser = {
-        isVipMember: "False", //Auto ko can them
         Username: req.body.Username,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,
@@ -133,7 +132,6 @@ router.put("/updateUser/:_id", async (req, res) => {
           message: "Update Failed"
         });
       } 
-        user.isVipMember = req.body.isVipMember,
         user.Username = req.body.Username,
         user.gmailUser = req.body.gmailUser,
         user.addressUser = req.body.addressUser,
