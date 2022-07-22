@@ -84,7 +84,6 @@ router.post("/insertUser", async (req, res) => {
       let newUser = {
         isVipMember: "False", //Auto ko can them
         Username: req.body.Username,
-        profilePictureUser: "http://localhost:3000/api/image/" + req.file.originalname,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,
         phoneUser: req.body.phoneUser,
@@ -136,7 +135,6 @@ router.put("/updateUser/:_id", async (req, res) => {
       } 
         user.isVipMember = req.body.isVipMember,
         user.Username = req.body.Username,
-        user.profilePictureUser = req.body.profilePictureUser,
         user.gmailUser = req.body.gmailUser,
         user.addressUser = req.body.addressUser,
         user.phoneUser = req.body.phoneUser,
