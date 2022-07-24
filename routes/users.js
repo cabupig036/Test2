@@ -166,7 +166,7 @@ router.put("/updatepwd/:_id", async (req, res) => {
           user.passwordHash
         );
         if (!passwordIsValid) {
-          return res.send({
+          return res.status(404).json({
             message: "Invalid Password!"
           });
         }
