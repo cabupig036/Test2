@@ -166,21 +166,21 @@ router.put("/updatepwd/:_id", async (req, res) => {
           user.passwordHash
         );
         if (!passwordIsValid) {
-          return res.status(404).send({
+          return res.status(404).json({
             message: "Invalid Password!"
           });
         }
         else{
           user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8)
           user.save();
-          return res.status(200).send({
+          return res.status(200).json({
             message: "Update Complete"
           });
         }
     });
 } catch (error) {
   console.log(error);
-  res.status(404).json(error);
+  res.status(400).json(error);
 }
 });
 
