@@ -2,7 +2,7 @@ const User = require("../models/User");
 checkDuplicateGmail = (req, res, next) => {
     // Gmail
     User.findOne({
-        gmail: req.body.gmail
+        gmailUser: req.body.gmailUser
     }).exec((err, user) => {
         if (err) {
             res.status(500).send({

@@ -73,34 +73,6 @@ exports.signin = (req, res) => {
         });
 };
 
-//Register Shipper
-exports.signupStaff = (req, res) => {
-    var digits = '0123456789';
-    let OTP = '';
-    for (let i = 0; i < 8; i++ ) {
-      OTP += digits[Math.floor(Math.random() * 10)];
-    }
-    const shipper = new Shipper({
-        Number: "SP" + OTP, //Number nay auto
-        Shippername: req.body.Shippername,
-        gmailShipper: req.body.gmailShipper,
-        phoneShipper: req.body.phoneShipper,
-        passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
-    });
-
-    shipper.save(err => {
-        if (err) {
-            res.status(500).send({
-                message: err
-            });
-            return;
-        } else {
-            res.send({
-                message: "Shipper was registered successfully!"
-            });
-        }
-    });
-};
 
 //Login Shipper
 exports.signinStaff = (req, res) => {

@@ -15,7 +15,7 @@ const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
 const blackListRoute = require("./routes/blacklist");
 const oderRoute = require("./routes/oder");
-
+const resetpwdRouter = require("./routes/resetPwd");
 
 
 
@@ -56,6 +56,7 @@ app.use("/api/support", supportRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/blacklist", blackListRoute);
 app.use("/api/oder", oderRoute);
+app.use("/api/resetpwd", resetpwdRouter);
 app.use("/api/image", ImageRouter);
 
 var server = app.listen(port, () => {

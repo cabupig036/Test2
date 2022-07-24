@@ -34,62 +34,30 @@ const Storage = multer.diskStorage({
 
 const upload = multer({
   storage: Storage
-}).fields([{
-  name: "image",
-  maxCount: 1
-}, {
-  name: "imageProduct",
-  maxCount: 1
-}]);
+}).single('image');
 
 
 //Them don
 router.post("/insertOder/:gmailUser", async (req, res) => {
   try {
-    var imageSP = "";
-    var imagePro = "";
-
     upload(req, res, (err) => {
       if (err) {
         return res.status(401).json(err);
       }
-      if (req.files.image == undefined || req.files.imageProduct == undefined) {
-        return res.status(404).json({
-          messeger: "Them hinh please"
-        })
-      } else {
-        const img = {
-          imgName: req.files.image[0].originalname,
-          image: {
-            data: fs.readFileSync(path.join('img/' + req.files.image[0].filename)),
-            contentType: 'image/png'
-          }
+      const img = {
+        imgName: req.file.originalname,
+        image: {
+          data: fs.readFileSync(path.join('img/' + req.file.filename)),
+          contentType: 'image/png'
         }
-        Image.create(img, (err, item) => {
-          if (err) {
-            res.status(401).json(err);
-          } else {
-            item.save();
-          }
-        });
-        const IMG = {
-          imgName: req.files.imageProduct[0].originalname,
-          image: {
-            data: fs.readFileSync(path.join('img/' + req.files.imageProduct[0].filename)),
-            contentType: 'image/png'
-          }
+      }
+      Image.create(img, (err, item) => {
+        if (err) {
+          res.status(401).json(err);
+        } else {
+          item.save();
         }
-        Image.create(IMG, (err, item) => {
-          if (err) {
-            res.status(401).json(err);
-          } else {
-            item.save();
-          }
-        });
-        imagePro = req.files.imageProduct[0].originalname;
-
-
-        imageSP = req.files.image[0].originalname;
+      });
 
 
         let newOder = {
@@ -102,8 +70,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           addressDetail: req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
           cod: req.body.cod,
           price: req.body.price,
-          productImg: "http://localhost:3000/api/image/" + imagePro,
-          detailsPro: "http://localhost:3000/api/image/" + imageSP,
+          productImg: "http://localhost:3000/api/image/" + req.file.originalname,
           Note: req.body.Note,
           optionsPayment: req.body.optionsPayment,
           status: "Waiting",
@@ -228,8 +195,6 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
             }
           }
         });
-      }
-
     })
   } catch (error) {
     res.status(404).json(error);

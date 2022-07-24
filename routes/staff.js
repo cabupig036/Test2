@@ -66,26 +66,7 @@ router.post("/insertAdmin", async (req, res) => {
         res.json({
           message: "Gmail Used "
         });
-      } else {
-    upload(req, res, (err) => {
-      if (err) {
-        return res.status(401).json(err);
-      }
-      const img = {
-        imgName: req.file.originalname,
-        image: {
-          data: fs.readFileSync(path.join('img/' + req.file.filename)),
-          contentType: 'image/png'
-        }
-      }
-      Image.create(img, (err, item) => {
-        if (err) {
-          res.status(401).json(err);
-        } else {
-          item.save();
-        }
-      });
-   
+      } else {   
       let newAdmin = {
         
         Number : "AD" + OTP,
@@ -93,7 +74,6 @@ router.post("/insertAdmin", async (req, res) => {
         addressAdmin: req.body.addressAdmin,
         gmailAdmin: req.body.gmailAdmin,
         phoneAdmin: req.body.phoneAdmin,
-        profilePictureAdmin: "http://localhost:3000/api/image/" + req.file.originalname,
         dateAdmin: req.body.dateAdmin,
         passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
       };
@@ -106,7 +86,7 @@ router.post("/insertAdmin", async (req, res) => {
         }
       });
     
-    });
+
   }
 });
   } catch (error) {
