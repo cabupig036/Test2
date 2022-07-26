@@ -16,6 +16,7 @@ const authRoute = require("./routes/auth");
 const blackListRoute = require("./routes/blacklist");
 const oderRoute = require("./routes/oder");
 const resetpwdRouter = require("./routes/resetPwd");
+const codRoute = require("./routes/cod");
 
 
 
@@ -56,6 +57,7 @@ app.use("/api/support", supportRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/blacklist", blackListRoute);
 app.use("/api/oder", oderRoute);
+app.use("/api/cod", codRoute);
 app.use("/api/resetpwd", resetpwdRouter);
 app.use("/api/image", ImageRouter);
 
