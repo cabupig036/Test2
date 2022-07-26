@@ -74,13 +74,16 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           Note: req.body.Note,
           optionsPayment: req.body.optionsPayment,
           status: "Waiting",
+          collectMoney: req.body.collectMoney,
+          charges: req.body.charges,
+          transFee: req.body.transFee,
+          idUser: req.body.idUser,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
             res.status(401).json(err);
           } else {
             oder.save();
-
             function sendOder(newOder) {
               return `<table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
                       <tbody>
@@ -395,9 +398,8 @@ router.put("/DeliveringOder/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       oder.status = "Delivering";
-      oder.Number = shipper.gmailShipper
+      oder.idShipper = req.body.idShipper
       oder.save();
-      shipper.Number++;
       return res.status(200).json({
         message: "Delivering"
       })
@@ -431,6 +433,7 @@ router.put("/Pickup/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      oder.idUser = req.body.idUser
       oder.status = "Pickup";
       oder.save();
       return res.status(200).json({
@@ -443,7 +446,7 @@ router.put("/Pickup/:_id", async (req, res) => {
 });
 
 //#####################################################
-//Xem đơn hoàn thành bằng SDT của User
+//Xem đơn hoàn thành bằng ID của User
 router.get("/CompletedView/:idUser", async (req, res) => {
   try {
     User.findOne({
@@ -467,7 +470,7 @@ router.get("/CompletedView/:idUser", async (req, res) => {
   }
 });
 
-//Xem đơn đã hủy bằng SDT của User
+//Xem đơn đã hủy bằng ID của User
 router.get("/CanceledView/:idUser", async (req, res) => {
   try {
     User.findOne({
@@ -491,7 +494,7 @@ router.get("/CanceledView/:idUser", async (req, res) => {
   }
 });
 
-//Xem đơn đang giao bằng SDT của User
+//Xem đơn đang giao bằng ID của User
 router.get("/DeliveringView/:idUser", async (req, res) => {
   try {
     User.findOne({
@@ -515,7 +518,7 @@ router.get("/DeliveringView/:idUser", async (req, res) => {
   }
 });
 
-//Xem đơn Chờ lay hang bằng SDT của User
+//Xem đơn Chờ lay hang bằng ID của User
 router.get("/WaitingView/:idUser", async (req, res) => {
   try {
     User.findOne({
@@ -539,7 +542,7 @@ router.get("/WaitingView/:idUser", async (req, res) => {
   }
 });
 
-//Xem đơn Đang chờ bàn giao bằng SDT cua User
+//Xem đơn Đang chờ bàn giao bằng ID cua User
 router.get("/WaitingForHandoverView/:idUser", async (req, res) => {
   try {
     User.findOne({

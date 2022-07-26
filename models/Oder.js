@@ -15,6 +15,11 @@ const OderSchema = new mongoose.Schema({
     optionsPayment : String,
     gmailUserSend: String,
     status : String,
+    collectMoney: String,
+    charges: String,
+    transFee: String,
+    idUser: String,
+    idShipper: String,
 },);
 
 module.exports = mongoose.model("Oder", OderSchema, "Oder");
