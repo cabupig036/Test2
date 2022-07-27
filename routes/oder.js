@@ -234,9 +234,10 @@ router.get("/:idUser", async (req, res) => {
   }
 });
 //Xem hang dang giao
-router.get("/allOder/Delivering", async (req, res) => {
+router.get("/allOder/Delivering/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "Delivering"
       }
@@ -248,9 +249,10 @@ router.get("/allOder/Delivering", async (req, res) => {
 });
 
 //Xem hang hoan thanh
-router.get("/allOder/Completed", async (req, res) => {
+router.get("/allOder/Completed/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "Completed"
       }
@@ -262,9 +264,10 @@ router.get("/allOder/Completed", async (req, res) => {
 });
 
 //Xem hang da huy
-router.get("/allOder/Canceled", async (req, res) => {
+router.get("/allOder/Canceled:/idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "Canceled"
       }
@@ -276,9 +279,10 @@ router.get("/allOder/Canceled", async (req, res) => {
 });
 
 //Xem hang chua duoc shipper nhan
-router.get("/allOder/Inventory", async (req, res) => {
+router.get("/allOder/Inventory/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "inventory"
       }
@@ -290,9 +294,10 @@ router.get("/allOder/Inventory", async (req, res) => {
 });
 
 //Xem hang cho lay
-router.get("/allOder/Pickup", async (req, res) => {
+router.get("/allOder/Pickup/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "Pickup"
       }
@@ -304,9 +309,10 @@ router.get("/allOder/Pickup", async (req, res) => {
 });
 
 //Xem hang chua duoc shipper nhan
-router.get("/allOder/Waiting", async (req, res) => {
+router.get("/allOder/Waiting/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
+      idUser: req.params.idUser,
       status: {
         $eq: "Waiting"
       }
