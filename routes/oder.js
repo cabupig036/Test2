@@ -22,6 +22,7 @@ const {
 const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
+const User = require("../models/User");
 //Storage
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -40,6 +41,14 @@ const upload = multer({
 //Them don
 router.post("/insertOder/:gmailUser", async (req, res) => {
   try {
+    User.findOne({
+      gmailUser: req.params.gmailUser
+    }).exec((err, user) => {
+      if (err) {
+        res.json({
+          message: "Update Failed"
+        });
+      }
     upload(req, res, (err) => {
       if (err) {
         return res.status(401).json(err);
@@ -75,6 +84,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           collectMoney: req.body.collectMoney,
           totalWeight: req.body.totalWeight,
           optionSend: req.body.optionSend,
+          idUser: user._id,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
@@ -196,7 +206,8 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           }
         });
     })
-  } catch (error) {
+  })
+ } catch (error) {
     res.status(404).json(error);
     console.log(error);
   }
