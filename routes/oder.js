@@ -225,7 +225,7 @@ router.get("/allOder", async (req, res) => {
 //Xem all Oder
 router.get("/:idUser", async (req, res) => {
   try {
-    const oder = await Oder.findById({
+    const oder = await Oder.find({
       idUser: req.params.idUser
     });
     res.status(200).json(oder);
