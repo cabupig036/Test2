@@ -58,8 +58,6 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           item.save();
         }
       });
-
-
         let newOder = {
           phoneRev: req.body.phoneRev,
           nameRev: req.body.nameRev,
@@ -75,9 +73,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           optionsPayment: req.body.optionsPayment,
           status: "Waiting",
           collectMoney: req.body.collectMoney,
-          charges: req.body.charges,
-          transFee: req.body.transFee,
-          idUser: req.body.idUser,
+          totalWeight: req.body.totalWeight,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
@@ -333,19 +329,22 @@ router.put("/updateOder/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-      oder.NameOder = req.body.NameOder,
-        oder.OptionsPayment = req.body.OptionsPayment,
-        oder.cod = req.body.cod,
-        oder.OptionsDelivery = req.body.OptionsDelivery,
-        oder.DateOder = req.body.DateOder,
-        oder.ImageOder = req.body.ImageOder,
-        oder.NoteOder = req.body.NoteOder,
-        oder.RevAddress = req.body.RevAddress,
-        oder.RevName = req.body.RevName,
-        oder.RevPhone = req.body.RevPhone,
-        oder.phoneUser = req.body.phoneUser,
-        oder.status = req.body.status,
-        oder.save();
+      oder.phoneRev= req.body.phoneRev,
+      oder.nameRev= req.body.nameRev,
+      oder.city= req.body.city,
+      oder.district= req.body.district,
+      oder.ward= req.body.ward,
+      oder.address= req.body.address,
+      oder.addressDetail= req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
+      oder.cod= req.body.cod,
+      oder.price= req.body.price,
+      oder.productImg= "http://localhost:3000/api/image/" + req.file.originalname,
+      oder.Note= req.body.Note,
+      oder.optionsPayment= req.body.optionsPayment,
+      oder.status= req.body.status,
+      oder.collectMoney= req.body.collectMoney,
+      oder.totalWeight= req.body.totalWeight,
+      oder.save();
       return res.status(200).json({
         message: "Update Completely"
       });
@@ -355,6 +354,8 @@ router.put("/updateOder/:_id", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
+
 
 //Hoan thanh
 router.put("/CompletedOder/:_id", async (req, res) => {
@@ -393,12 +394,11 @@ router.put("/CancelOder/:_id", async (req, res) => {
 //Dang giao
 router.put("/DeliveringOder/:_id", async (req, res) => {
   try {
-    const shipper = await Shipper.findById(req.body.id);
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
       oder.status = "Delivering";
-      oder.idShipper = req.body.idShipper
+      oder.idShipper = req.body.idShipper,
       oder.save();
       return res.status(200).json({
         message: "Delivering"
@@ -433,7 +433,6 @@ router.put("/Pickup/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
-      oder.idUser = req.body.idUser
       oder.status = "Pickup";
       oder.save();
       return res.status(200).json({

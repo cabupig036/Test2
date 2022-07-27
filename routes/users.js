@@ -53,59 +53,53 @@ router.get("/:_id", async (req, res) => {
   }
 });
 //Them user
-router.post("/insertUser", async (req, res) => {
-  try {
-    User.findOne({
-      gmailUser: req.params.gmailUser
-    }).exec((err, user) => {
-      if (err) {
-        res.json({
-          message: "Gmail Used "
-        });
-      } else {
-        upload(req, res, (err) => {
-          if (err) {
-            return res.status(401).json(err);
-          }
-          const img = {
-            imgName: req.file.originalname,
-            image: {
-              data: fs.readFileSync(path.join('img/' + req.file.filename)),
-              contentType: 'image/png'
-            }
-          }
-          Image.create(img, (err, item) => {
-            if (err) {
-              res.status(401).json(err);
-            } else {
-              item.save();
-            }
-          });
-          let newUser = {
-            Username: req.body.Username,
-            gmailUser: req.body.gmailUser,
-            addressUser: req.body.addressUser,
-            phoneUser: req.body.phoneUser,
-            passwordHash: bcrypt.hashSync(req.body.passwordHash, 8),
-          }
-          console.log(newUser)
-          User.create(newUser, (err, users) => {
-            if (err) {
-              res.status(401).json(err);
-            } else {
-              users.save();
-              return res.status(200).json("Inserted");
-            }
-          });
-
-        });
-      }
-    });
-  } catch (error) {
-    res.status(404).json(error);
-    console.log(error);
-  }
-});
+// router.post("/insertUser", async (req, res) => {
+//   try {
+//     User.findOne({
+//       gmailUser: req.params.gmailUser
+//     }).exec((err, user) => {
+//       if (err) {
+//         res.json({
+//           message: "Gmail Used "
+//         });
+//       } else {
+//           let newUser = {
+//             Username: req.body.Username,
+//             gmailUser: req.body.gmailUser,
+//             addressUser: req.body.addressUser,
+//             phoneUser: req.body.phoneUser,
+//             passwordHash: bcrypt.hashSync(req.body.passwordHash, 8),
+//           };
+//           let newBank = {
+//             gmailUser: "",
+//             AccountNumber: "",
+//             NameBank: "",
+//             nameHolder: "",
+//             Price: "",
+//           };
+//           COD.create(newBank, (err, banks) => {
+//             if (err) {
+//               res.status(401).json(err);
+//             } else {
+//               banks.save();
+//               return res.status(200).json("Inserted");
+//             }
+//           });
+//           User.create(newUser, (err, users) => {
+//             if (err) {
+//               res.status(401).json(err);
+//             } else {
+//               users.save();
+//               return res.status(200).json("Inserted");
+//             }
+//           });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(404).json(error);
+//     console.log(error);
+//   }
+// });
 
 
 //Xoa User
@@ -114,7 +108,6 @@ router.get("/deleteUser/:_id", async (req, res) => {
     const user = await User.deleteOne({
       _id: req.params._id
     });
-    console.log("Deleted");
     res.status(200).json("Deleted");
   } catch (error) {
     res.status(404).json(error);
@@ -132,12 +125,12 @@ router.put("/updateUser/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-      user.Username = req.body.Username,
+        user.Username = req.body.Username,
         user.gmailUser = req.body.gmailUser,
         user.addressUser = req.body.addressUser,
         user.phoneUser = req.body.phoneUser,
-        user.passwordHash = bcrypt.hashSync(req.body.passwordHash, 8)
-      user.save();
+        user.save();
+      
       return res.status(200).json({
         message: "Update Completely"
       });
@@ -235,7 +228,7 @@ router.put("/unblockBlacklist/:phoneUser", async (req, res) => {
   }
 });
 
-//Them Blacklist
+//Them Bank
 router.post("/insertBank", async (req, res) => {
   try {
     let newBank = {

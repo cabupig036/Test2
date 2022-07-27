@@ -40,43 +40,43 @@ router.get("/:_id", async (req, res) => {
   }
 });
 //Them cod
-router.post("/insertCOD", async (req, res) => {
-  try {
-    COD.findOne({
-      AccountNumber: req.body.AccountNumber
-    }).exec((err, cod) => {
-      if (err) {
-        res.json({
-          message: "Account Used"
-        });
-      } else {
-      let newCOD = {
-
-        gmailUser: req.body.gmailUser,
-        AccountNumber: req.body.AccountNumber,
-        NameBank: req.body.NameBank,
-        nameHolder: req.body.nameHolder,
-        Price: req.body.Price,
-      }
-      console.log(newCOD)
-      COD.create(newCOD, (err, cod) => {
-        if (err) {
-          res.status(401).json(err);
-        } else {
-          cod.save();
-          return res.status(200).json("Inserted");
-        }
-      });
-  }
-});
-  } catch (error) {
-    res.status(404).json(error);
-    console.log(error);
-  }
-});
+// router.post("/insertCOD", async (req, res) => {
+//   try {
+//     COD.findOne({
+//       AccountNumber: req.body.AccountNumber
+//     }).exec((err, cod) => {
+//       if (err) {
+//         res.json({
+//           message: "Account Used"
+//         });
+//       } else {
+//       let newCOD = {
+//         idUser: req.body.idUser,
+//         gmailUser: req.body.gmailUser,
+//         AccountNumber: req.body.AccountNumber,
+//         NameBank: req.body.NameBank,
+//         nameHolder: req.body.nameHolder,
+//         Price: req.body.Price,
+//       }
+//       COD.create(newCOD, (err, cod) => {
+//         if (err) {
+//           res.status(401).json(err);
+//         } else {
+//           cod.save();
+//           return res.status(200).json("Inserted");
+//         }
+//       });
+//   }
+// });
+//   } catch (error) {
+//     res.status(404).json(error);
+//     console.log(error);
+//   }
+// });
 
 
 //Xoa Cod
+
 router.get("/deleteCOD/:_id", async (req, res) => {
   try {
     const cod = await COD.deleteOne({
@@ -99,6 +99,7 @@ router.put("/updateCOD/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }else {
+        cod.idUser = req.body.idUser,
         cod.gmailUser = req.body.gmailUser,
         cod.AccountNumber = req.body.AccountNumber,
         cod.NameBank = req.body.NameBank,
@@ -115,4 +116,6 @@ router.put("/updateCOD/:_id", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
+
 module.exports = router;
