@@ -29,10 +29,10 @@ router.get("/allCOD", async (req, res) => {
   }
 });
 //Xem COD bang ID
-router.get("/:_id", async (req, res) => {
+router.get("/:idUser", async (req, res) => {
   try {
-    const cod = await COD.findById({ 
-      _id : req.params._id
+    const cod = await COD.find({ 
+      idUser : req.params.idUser
     });
     res.status(200).json(cod);
   } catch (error) {
