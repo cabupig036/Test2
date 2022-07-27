@@ -89,7 +89,7 @@ router.get("/deleteCOD/:_id", async (req, res) => {
 });
 
 //Sua Cod
-router.put("/updateCOD/:_id", async (req, res) => {
+router.post("/updateCOD/:_id", async (req, res) => {
   try {
     COD.findOne({
       AccountNumber: req.body.AccountNumber
@@ -98,24 +98,29 @@ router.put("/updateCOD/:_id", async (req, res) => {
         res.json({
           message: "Update Failed"
         });
-      }else {
-        cod.idUser = req.body.idUser,
-        cod.gmailUser = req.body.gmailUser,
-        cod.AccountNumber = req.body.AccountNumber,
-        cod.NameBank = req.body.NameBank,
-        cod.nameHolder = req.body.nameHolder,
-        cod.Price = req.body.Price,
-        cod.save();
-            return res.status(200).json({
-              message: "Update Completely"
-            });
-          }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(404).json(error);
-  }
-});
-
+      }
+      let newBank = {
+        idUser : req.body.idUser,
+        gmailUser : req.body.gmailUser,
+        AccountNumber : req.body.AccountNumber,
+        NameBank : req.body.NameBank,
+        nameHolder : req.body.nameHolder,
+        Price : req.body.Price,
+        idUser : req.params._id,
+      };
+      COD.create(newBank, (err, banks) => {
+        if (err) {
+          res.status(401).json(err);
+        } else {
+          banks.save();
+          return res.status(200).json("Inserted");
+        }
+      });
+    })
+   } catch (error) {
+      res.status(404).json(error);
+      console.log(error);
+    }
+  });
 
 module.exports = router;

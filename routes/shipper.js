@@ -140,15 +140,6 @@ router.put("/updateshipper/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-      if (req.body.Shippername == undefined ||
-        req.body.passwordHash == undefined ||
-        req.body.gmailShipper == undefined ||
-        req.body.addressShipper == undefined ||
-        req.body.phoneShipper == undefined) {
-        return res.json({
-          message: "Thông tin rỗng"
-        });
-      } else {
         shipper.isVipMember = req.body.isVipMember,
           shipper.Shippername = req.body.Shippername,
           shipper.profilePictureShipper = "http://localhost:3000/api/image/" + req.file.originalname,
@@ -160,7 +151,6 @@ router.put("/updateshipper/:_id", async (req, res) => {
         return res.status(200).json({
           message: "Update Completely"
         });
-      }
     });
   } catch (error) {
     console.log(error);

@@ -5,6 +5,7 @@ const CODSchema = new mongoose.Schema({
     NameBank  : String,
     nameHolder  : String,
     Price  : String,
+    idUser: String,
 },);
 
 module.exports = mongoose.model("COD", CODSchema, "COD");
