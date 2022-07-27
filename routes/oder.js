@@ -264,7 +264,7 @@ router.get("/allOder/Completed/:idUser", async (req, res) => {
 });
 
 //Xem hang da huy
-router.get("/allOder/Canceled:/idUser", async (req, res) => {
+router.get("/allOder/Canceled/:idUser", async (req, res) => {
   try {
     const oder = await Oder.find({
       idUser: req.params.idUser,
@@ -698,6 +698,92 @@ router.get("/WaitingForHandoverView/:idShipper", async (req, res) => {
         res.status(200).json(oder);
       }
     });
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//Xem hang dang giao
+router.get("/allOder/Delivering/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "Delivering"
+      }
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem hang hoan thanh
+router.get("/allOder/Completed/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "Completed"
+      }
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem hang da huy
+router.get("/allOder/Canceled/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "Canceled"
+      }
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem hang chua duoc shipper nhan
+router.get("/allOder/Inventory/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "inventory"
+      }
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem hang cho lay
+router.get("/allOder/Pickup/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "Pickup"
+      }
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem hang chua duoc shipper nhan
+router.get("/allOder/Waiting/", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      status: {
+        $eq: "Waiting"
+      }
+    });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
