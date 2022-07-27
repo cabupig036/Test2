@@ -17,6 +17,7 @@ const OderSchema = new mongoose.Schema({
     status : String,
     collectMoney: String,
     totalWeight: String,
+    optionSend: String,
     idUser: String,
     idShipper: String,
 },);

@@ -74,6 +74,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           status: "Waiting",
           collectMoney: req.body.collectMoney,
           totalWeight: req.body.totalWeight,
+          optionSend: req.body.optionSend,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
