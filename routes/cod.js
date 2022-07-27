@@ -106,7 +106,6 @@ router.post("/updateCOD/:_id", async (req, res) => {
         NameBank : req.body.NameBank,
         nameHolder : req.body.nameHolder,
         Price : req.body.Price,
-        idUser : req.params._id,
       };
       COD.create(newBank, (err, banks) => {
         if (err) {
