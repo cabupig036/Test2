@@ -86,6 +86,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           optionSend: req.body.optionSend,
           idUser: user._id,
         };
+        console.log(newOder.Note)
         Oder.create(newOder, (err, oder) => {
           if (err) {
             res.status(401).json(err);
@@ -184,7 +185,6 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
 
             var togmail = req.params.gmailUser;
             console.log("togmail: " + togmail);
-            console.log(newOder);
             var user = Users.findOne({
               // _id: req.body._id,
               gmailUser: req.params.gmailUser
@@ -223,10 +223,10 @@ router.get("/allOder", async (req, res) => {
   }
 });
 //Xem all Oder
-router.get("/:_id", async (req, res) => {
+router.get("/:idUser", async (req, res) => {
   try {
     const oder = await Oder.findById({
-      _id: req.params._id
+      idUser: req.params.idUser
     });
     res.status(200).json(oder);
   } catch (error) {
