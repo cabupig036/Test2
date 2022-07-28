@@ -1,7 +1,5 @@
 const router = require("express").Router();
 
-const Discount = require("../models/Discount");
-const Support = require("../models/Support");
 const Users = require("../models/User");
 const Admin = require("../models/Admin");
 const Shipper = require("../models/Shipper");
