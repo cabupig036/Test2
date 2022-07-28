@@ -52,55 +52,6 @@ router.get("/:_id", async (req, res) => {
     res.status(404).json(error);
   }
 });
-//Them user
-// router.post("/insertUser", async (req, res) => {
-//   try {
-//     User.findOne({
-//       gmailUser: req.params.gmailUser
-//     }).exec((err, user) => {
-//       if (err) {
-//         res.json({
-//           message: "Gmail Used "
-//         });
-//       } else {
-//           let newUser = {
-//             Username: req.body.Username,
-//             gmailUser: req.body.gmailUser,
-//             addressUser: req.body.addressUser,
-//             phoneUser: req.body.phoneUser,
-//             passwordHash: bcrypt.hashSync(req.body.passwordHash, 8),
-//           };
-//           let newBank = {
-//             gmailUser: "",
-//             AccountNumber: "",
-//             NameBank: "",
-//             nameHolder: "",
-//             Price: "",
-//           };
-//           COD.create(newBank, (err, banks) => {
-//             if (err) {
-//               res.status(401).json(err);
-//             } else {
-//               banks.save();
-//               return res.status(200).json("Inserted");
-//             }
-//           });
-//           User.create(newUser, (err, users) => {
-//             if (err) {
-//               res.status(401).json(err);
-//             } else {
-//               users.save();
-//               return res.status(200).json("Inserted");
-//             }
-//           });
-//       }
-//     });
-//   } catch (error) {
-//     res.status(404).json(error);
-//     console.log(error);
-//   }
-// });
-
 
 //Xoa User
 router.get("/deleteUser/:_id", async (req, res) => {
@@ -125,12 +76,12 @@ router.put("/updateUser/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-        user.Username = req.body.Username,
+      user.Username = req.body.Username,
         user.gmailUser = req.body.gmailUser,
         user.addressUser = req.body.addressUser,
         user.phoneUser = req.body.phoneUser,
         user.save();
-      
+
       return res.status(200).json({
         message: "Update Completely"
       });
@@ -148,107 +99,34 @@ router.put("/updatepwd/:_id", async (req, res) => {
     User.findOne({
       _id: req.params._id
     }).exec((err, user) => {
-        if (err) {
-          res.json({
-            message: "Update Failed"
-          });
-        }
-        var newPwd;
-        var passwordIsValid = bcrypt.compareSync(
-          req.body.passwordHash,
-          user.passwordHash
-        );
-        if (!passwordIsValid) {
-          return res.status(404).json({
-            message: "Invalid Password!"
-          });
-        }
-        else{
-          user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8)
-          user.save();
-          return res.status(200).json({
-            message: "Update Complete"
-          });
-        }
-    });
-} catch (error) {
-  console.log(error);
-  res.status(400).json(error);
-}
-});
-
-
-//Ap dung discount
-router.put("/useDiscount/:gmailUser", async (req, res) => {
-  try {
-    User.findOne({
-      gmailUser: req.params.gmailUser
-    }).exec((err, user) => {
-      if (user.Discount30 != "1") {
-        res.status(404).json({
-          "message": "Yes"
+      if (err) {
+        res.json({
+          message: "Update Failed"
+        });
+      }
+      var newPwd;
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.passwordHash,
+        user.passwordHash
+      );
+      if (!passwordIsValid) {
+        return res.status(404).json({
+          message: "Invalid Password!"
+        });
+      } else {
+        user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8)
+        user.save();
+        return res.status(200).json({
+          message: "Update Complete"
         });
       }
     });
   } catch (error) {
-    res.status(404).json("Update Fail");
-  }
-});
-//Block user to Blacklist
-router.put("/addBlacklist/:phoneUser", async (req, res) => {
-  try {
-    User.findOne({
-      phoneUser: req.params.phoneUser
-    }).exec((err, user) => {
-      user.BlackList = "true";
-      user.save();
-      return res.status(200).json({
-        message: "Update Completely"
-      })
-    });
-  } catch (error) {
-    res.status(404).json("Update Fail");
-  }
-});
-
-//Unblock user to Blacklist
-router.put("/unblockBlacklist/:phoneUser", async (req, res) => {
-  try {
-    User.findOne({
-      phoneUser: req.params.phoneUser
-    }).exec((err, user) => {
-      user.BlackList = "false";
-      user.save();
-      return res.status(200).json({
-        message: "Update Completely"
-      })
-    });
-  } catch (error) {
-    res.status(404).json("Update Fail");
-  }
-});
-
-//Them Bank
-router.post("/insertBank", async (req, res) => {
-  try {
-    let newBank = {
-      NameBank: req.body.NameBank,
-      NameHolder: req.body.NameHolder,
-      AccountNumber: req.body.AccountNumber,
-    };
-    COD.create(newBank, (err, banks) => {
-      if (err) {
-        res.status(401).json(err);
-      } else {
-        banks.save();
-        return res.status(200).json("Inserted");
-      }
-    });
-  } catch (error) {
-    res.status(404).json(error);
     console.log(error);
+    res.status(400).json(error);
   }
 });
+
 router.get("/OTP", async (req, res) => {
   var digits = '0123456789';
   let OTP = '';

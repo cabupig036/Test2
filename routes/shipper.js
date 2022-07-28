@@ -157,6 +157,38 @@ router.put("/updateshipper/:_id", async (req, res) => {
   }
 });
 
-
+//Sua mật khẩu
+router.put("/updatepwd/:_id", async (req, res) => {
+  try {
+    User.findOne({
+      _id: req.params._id
+    }).exec((err, user) => {
+      if (err) {
+        res.json({
+          message: "Update Failed"
+        });
+      }
+      var newPwd;
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.passwordHash,
+        user.passwordHash
+      );
+      if (!passwordIsValid) {
+        return res.status(404).json({
+          message: "Invalid Password!"
+        });
+      } else {
+        user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8)
+        user.save();
+        return res.status(200).json({
+          message: "Update Complete"
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+});
 
 module.exports = router;
