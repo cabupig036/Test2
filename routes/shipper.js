@@ -140,7 +140,6 @@ router.put("/updateshipper/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-        shipper.isVipMember = req.body.isVipMember,
           shipper.Shippername = req.body.Shippername,
           shipper.profilePictureShipper = "http://localhost:3000/api/image/" + req.file.originalname,
           shipper.gmailShipper = req.body.gmailShipper,
