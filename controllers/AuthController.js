@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
 //Login User
 exports.signin = (req, res) => {
     User.findOne({
-        gmailUser: req.body.gmailUser
+            gmailUser: req.body.gmailUser
         })
         .exec((err, user) => {
             if (err) {
@@ -76,11 +76,11 @@ exports.signin = (req, res) => {
 
 //Login Shipper
 exports.signinStaff = (req, res) => {
-    var Number = (req.body.Number).substring(0,2);
+    var Number = (req.body.Number).substring(0, 2);
     console.log(Number)
-    if(Number == "SP"){
+    if (Number == "SP") {
         Shipper.findOne({
-            Number: req.body.Number
+                Number: req.body.Number
             })
             .exec((err, shipper) => {
                 if (err) {
@@ -118,10 +118,9 @@ exports.signinStaff = (req, res) => {
                     }
                 });
             });
-    }
-    else if(Number == "AD"){
+    } else if (Number == "AD") {
         Admin.findOne({
-            Number: req.body.Number
+                Number: req.body.Number
             })
             .exec((err, admin) => {
                 if (err) {
@@ -159,12 +158,10 @@ exports.signinStaff = (req, res) => {
                     }
                 });
             });
-    }
-    else{
+    } else {
         res.status(200).send({
             message: "Login Fail",
         });
     }
 
-    };
-    
+};
