@@ -96,7 +96,7 @@ router.post("/insertShipper", async (req, res) => {
             gmailShipper: req.body.gmailShipper,
             addressShipper: req.body.addressShipper,
             phoneShipper: req.body.phoneShipper,
-            passwordHash: req.body.passwordHash,
+            passwordHash: bcrypt.hashSync(req.body.passwordHash, 8),
           };
           Shipper.create(newShipper, (err, Shippers) => {
             if (err) {
@@ -146,7 +146,7 @@ router.put("/updateshipper/:_id", async (req, res) => {
           shipper.gmailShipper = req.body.gmailShipper,
           shipper.addressShipper = req.body.addressShipper,
           shipper.phoneShipper = req.body.phoneShipper,
-          shipper.passwordHash = req.body.passwordHash,
+          shipper.passwordHash = bcrypt.hashSync(req.body.passwordHash, 8),
           shipper.save();
         return res.status(200).json({
           message: "Update Completely"
