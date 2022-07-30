@@ -20,7 +20,6 @@ const OderSchema = new mongoose.Schema({
     optionSend: String,
     idUser: String,
     idShipper: String,
-    
 },);
 
 module.exports = mongoose.model("Oder", OderSchema, "Oder");
