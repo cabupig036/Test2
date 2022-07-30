@@ -144,20 +144,21 @@ router.put("/updateshipper/:_id", async (req, res) => {
         if (err) {
           return res.status(401).json(err);
         }
-        const img = {
-          imgName: req.file.originalname,
-          image: {
-            data: fs.readFileSync(path.join('img/' + req.file.filename)),
-            contentType: 'image/png'
+        try {
+          const img = {
+            imgName: req.file.originalname,
+            image: {
+              data: fs.readFileSync(path.join('img/' + req.file.filename)),
+              contentType: 'image/png'
+            }
           }
-        }
-        Image.create(img, (err, item) => {
-          if (err) {
-            res.status(401).json(err);
-          } else {
-            item.save();
-          }
-        });
+          Image.create(img, (err, item) => {
+            if (err) {
+              res.status(401).json(err);
+            } else {
+              item.save();
+            }
+          });
           shipper.Shippername = req.body.Shippername,
           shipper.profilePictureShipper = "http://localhost:3000/api/image/" + req.file.originalname,
           shipper.gmailShipper = req.body.gmailShipper,
@@ -167,6 +168,17 @@ router.put("/updateshipper/:_id", async (req, res) => {
         return res.status(200).json({
           message: "Update Completely"
         });
+        } catch (e) {
+          shipper.Shippername = req.body.Shippername,
+          shipper.gmailShipper = req.body.gmailShipper,
+          shipper.addressShipper = req.body.addressShipper,
+          shipper.phoneShipper = req.body.phoneShipper,
+          shipper.save();
+        return res.status(200).json({
+          message: "Update Completely"
+        });
+        }
+        
       })
     });
   } catch (error) {
