@@ -76,96 +76,140 @@ exports.signin = (req, res) => {
 
 //Login Shipper
 exports.signinStaff = (req, res) => {
-    var Number = (req.body.Number).substring(0,2);
+    var Number = (req.body.Number).substring(0,3);
     console.log(Number)
-    if(Number == "SP"){
-        Shipper.findOne({
-            Number: req.body.Number
-            })
-            .exec((err, shipper) => {
-                if (err) {
-                    res.status(500).send({
-                        message: err
-                    });
-                    return;
-                }
-                if (!shipper) {
-                    return res.send({
-                        message: "Shipper Not found."
-                    });
-                }
-                //check password
-                var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
-                if (!passwordIsValid) {
-                    return res.send({
-                        message: "Invalid Password!"
-                    });
-                }
-                //đăng ký token
-                var token = jwt.sign({
-                    id: shipper.id
-                }, config.secret, {
-                    expiresIn: 86400 // tồn tại trong 24 hours
-                });
-                //trả về account
-                res.status(200).send({
-                    message: "Shipper Login successful",
-                    SHIPPER: {
-                        _id : shipper._id,
-                        Number: shipper.Number,
-                        gmailShipper: shipper.gmailShipper,
-                        Shippername: shipper.Shippername,
-                        accessToken: token
+    switch (Number) {
+        case "SHP":
+            Shipper.findOne({
+                Number: req.body.Number
+                })
+                .exec((err, shipper) => {
+                    if (err) {
+                        res.status(500).send({
+                            message: err
+                        });
+                        return;
                     }
-                });
-            });
-    }
-    else if(Number == "AD"){
-        Admin.findOne({
-            Number: req.body.Number
-            })
-            .exec((err, admin) => {
-                if (err) {
-                    res.status(500).send({
-                        message: err
-                    });
-                    return;
-                }
-                if (!admin) {
-                    return res.send({
-                        message: "Admin Not found."
-                    });
-                }
-                //check password
-                var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
-                if (!passwordIsValid) {
-                    return res.send({
-                        message: "Invalid Password!"
-                    });
-                }
-                //đăng ký token
-                var token = jwt.sign({
-                    id: admin.id
-                }, config.secret, {
-                    expiresIn: 86400 // tồn tại trong 24 hours
-                });
-                //trả về account
-                res.status(200).send({
-                    message: "Admin Login successful",
-                    ADMIMN: {
-                        _id : admin._id,
-                        Number: admin.Number,
-                        gmailAdmin: admin.gmailAdmin,
-                        Adminname: admin.Adminname,
-                        accessToken: token
+                    if (!shipper) {
+                        return res.send({
+                            message: "Shipper Not found."
+                        });
                     }
+                    //check password
+                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    if (!passwordIsValid) {
+                        return res.send({
+                            message: "Invalid Password!"
+                        });
+                    }
+                    //đăng ký token
+                    var token = jwt.sign({
+                        id: shipper.id
+                    }, config.secret, {
+                        expiresIn: 86400 // tồn tại trong 24 hours
+                    });
+                    //trả về account
+                    res.status(200).send({
+                        message: "Shipper Login successful",
+                        SHIPPER: {
+                            _id : shipper._id,
+                            Number: shipper.Number,
+                            gmailShipper: shipper.gmailShipper,
+                            Shippername: shipper.Shippername,
+                            accessToken: token
+                        }
+                    });
                 });
+            break;
+        case "ADC":
+            Admin.findOne({
+                Number: req.body.Number
+                })
+                .exec((err, admin) => {
+                    if (err) {
+                        res.status(500).send({
+                            message: err
+                        });
+                        return;
+                    }
+                    if (!admin) {
+                        return res.send({
+                            message: "Admin Not found."
+                        });
+                    }
+                    //check password
+                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    if (!passwordIsValid) {
+                        return res.send({
+                            message: "Invalid Password!"
+                        });
+                    }
+                    //đăng ký token
+                    var token = jwt.sign({
+                        id: admin.id
+                    }, config.secret, {
+                        expiresIn: 86400 // tồn tại trong 24 hours
+                    });
+                    //trả về account
+                    res.status(200).send({
+                        message: "Admin Login successful",
+                        ADMIMN: {
+                            _id : admin._id,
+                            Number: admin.Number,
+                            gmailAdmin: admin.gmailAdmin,
+                            Adminname: admin.Adminname,
+                            accessToken: token
+                        }
+                    });
+                });
+            break;
+        case "ADO":
+            Admin.findOne({
+                Number: req.body.Number
+                })
+                .exec((err, admin) => {
+                    if (err) {
+                        res.status(500).send({
+                            message: err
+                        });
+                        return;
+                    }
+                    if (!admin) {
+                        return res.send({
+                            message: "Admin Not found."
+                        });
+                    }
+                    //check password
+                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    if (!passwordIsValid) {
+                        return res.send({
+                            message: "Invalid Password!"
+                        });
+                    }
+                    //đăng ký token
+                    var token = jwt.sign({
+                        id: admin.id
+                    }, config.secret, {
+                        expiresIn: 86400 // tồn tại trong 24 hours
+                    });
+                    //trả về account
+                    res.status(200).send({
+                        message: "Admin Login successful",
+                        ADMIMN: {
+                            _id : admin._id,
+                            Number: admin.Number,
+                            gmailAdmin: admin.gmailAdmin,
+                            Adminname: admin.Adminname,
+                            accessToken: token
+                        }
+                    });
+                });
+            break;
+        default:
+            res.status(200).send({
+                message: "Login Fail",
             });
-    }
-    else{
-        res.status(200).send({
-            message: "Login Fail",
-        });
+            break;
     }
 
     };

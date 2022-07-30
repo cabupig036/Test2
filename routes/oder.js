@@ -1,14 +1,10 @@
 const router = require("express").Router();
 
 const Users = require("../models/User");
-const Admin = require("../models/Admin");
 const Shipper = require("../models/Shipper");
-const Blog = require("../models/Blog");
 const Oder = require("../models/Oder");
 const sendMail = require("../common/email");
-const bodyParser = require("body-parser");
 const Image = require("../models/Image");
-const config = require("../config/authconfig");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -773,7 +769,7 @@ router.get("/allOder/Pickup/", async (req, res) => {
   }
 });
 
-//Xem hang chua duoc shipper nhan
+//Xem lich su don hang
 router.get("/allOder/Waiting/", async (req, res) => {
   try {
     const oder = await Oder.find({
@@ -786,4 +782,8 @@ router.get("/allOder/Waiting/", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
+
+
+
 module.exports = router;
