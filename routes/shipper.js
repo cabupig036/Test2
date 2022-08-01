@@ -90,7 +90,7 @@ router.post("/insertShipper", async (req, res) => {
             OTP += digits[Math.floor(Math.random() * 10)];
           }
           let newShipper = {
-            Number: "SP" + OTP,
+            Number: "SHP" + OTP,
             Shippername: req.body.Shippername,
             profilePictureShipper: "http://localhost:3000/api/image/" + req.file.originalname,
             gmailShipper: req.body.gmailShipper,

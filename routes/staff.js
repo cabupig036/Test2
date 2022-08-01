@@ -61,28 +61,27 @@ router.post("/insertAdmin", async (req, res) => {
     }
     Admin.findOne({
       gmailAdmin: req.body.gmailAdmin
-    }).exec((err, user) => {
+    }).exec((err, admin) => {
       if (err) {
         res.json({
           message: "Gmail Used "
         });
-      } else {   
+      } else {  
+      var Option = req.body.Option; //chon Admin don hang hoac admin COD
       let newAdmin = {
-        
-        Number : "AD" + OTP,
-        Adminname: req.body.Adminname,
-        addressAdmin: req.body.addressAdmin,
-        gmailAdmin: req.body.gmailAdmin,
-        phoneAdmin: req.body.phoneAdmin,
-        dateAdmin: req.body.dateAdmin,
-        passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
+        Number : Option + OTP, // cái này auto
+        Adminname: req.body.Adminname, //ten admin
+        addressAdmin: req.body.addressAdmin, //địa chỉ
+        gmailAdmin: req.body.gmailAdmin, //gmail
+        phoneAdmin: req.body.phoneAdmin, //sdt
+        passwordHash: bcrypt.hashSync(req.body.passwordHash, 8) //mật khẩu
       };
       Admin.create(newAdmin, (err, admin) => {
         if (err) {
-          res.status(401).json(err);
+          res.status(401).json(err); //thất bại
         } else {
           admin.save();
-          return res.status(200).json("Inserted");
+          return res.status(200).json("Inserted"); //thành công
         }
       });
     
@@ -101,9 +100,9 @@ router.get("/deleteAdmin/:_id", async (req, res) => {
     const admin = await Admin.deleteOne({
       _id: req.params._id
     });
-    res.status(200).json("Deleted");
+    res.status(200).json("Deleted"); // thành công
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json(error); //thất bại
   }
 });
 
@@ -115,28 +114,17 @@ router.put("/updateAdmin/:_id", async (req, res) => {
     }).exec((err, admin) => {
       if (err) {
         res.json({
-          message: "Update Failed"
+          message: "Not found" //Không tìm thấy admin
         });
       } 
-      if (req.body.Adminname == undefined ||
-        req.body.addressAdmin == undefined || 
-        req.body.gmailAdmin == undefined ||
-        req.body.phoneAdmin == undefined ||
-        req.body.profilePictureAdmin == undefined) {
-       return res.json({
-         message: "Thông tin rỗng hoặc không hợp lệ"
-       });
-     } 
       else {
-        admin.Adminname = req.body.Adminname,
-        admin.addressAdmin = req.body.addressAdmin,
-        admin.gmailAdmin = req.body.gmailAdmin,
-        admin.phoneAdmin = req.body.phoneAdmin,
-        admin.profilePictureAdmin = "http://localhost:3000/api/image/" + req.file.originalname,
-        admin.passwordHash= bcrypt.hashSync(req.body.passwordHash, 8)
+        admin.Adminname = req.body.Adminname, //tên admin
+        admin.addressAdmin = req.body.addressAdmin, //địa chỉ
+        admin.gmailAdmin = req.body.gmailAdmin, //gmail
+        admin.phoneAdmin = req.body.phoneAdmin, //số điên thoại
         admin.save();
             return res.status(200).json({
-              message: "Update Completely"
+              message: "Update Completely" // thành công
             });
           }
     });

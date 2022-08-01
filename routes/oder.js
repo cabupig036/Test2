@@ -61,6 +61,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           item.save();
         }
       });
+
         let newOder = {
           phoneRev: req.body.phoneRev,
           nameRev: req.body.nameRev,
@@ -78,6 +79,8 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           collectMoney: req.body.collectMoney,
           totalWeight: req.body.totalWeight,
           optionSend: req.body.optionSend,
+          orderNature: req.body.orderNature,
+          timeWaiting: Date.now(),
           idUser: user._id,
         };
         console.log(newOder.Note)
@@ -783,6 +786,21 @@ router.get("/allOder/Waiting/", async (req, res) => {
   }
 });
 
+//History
+router.get("/History/:_id", async (req, res) => {
+  try {
+    
+    Oder.findOne({
+      _id: req.params._id
+    }).exec((err, oder) => {
+      var history = oder.time.find(o => o.timeWaiting);
+      console.log(history);
+      res.status(200).json(history);
+    });
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
 
 
 
