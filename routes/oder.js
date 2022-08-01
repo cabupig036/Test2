@@ -17,6 +17,7 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 const User = require("../models/User");
+const { time } = require("console");
 //Storage
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -61,7 +62,6 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           item.save();
         }
       });
-
         let newOder = {
           phoneRev: req.body.phoneRev,
           nameRev: req.body.nameRev,
@@ -80,14 +80,18 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           totalWeight: req.body.totalWeight,
           optionSend: req.body.optionSend,
           orderNature: req.body.orderNature,
-          timeWaiting: Date.now(),
           idUser: user._id,
         };
-        console.log(newOder.Note)
         Oder.create(newOder, (err, oder) => {
           if (err) {
             res.status(401).json(err);
           } else {
+
+              var timeWaiting = {
+                timeWaiting: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+              };
+            oder.time.push(timeWaiting); 
+            console.log(timeWaiting)
             oder.save();
             function sendOder(newOder) {
               return `<table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">

@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const timeSchema = new mongoose.Schema({ 
-    timeWaiting: { type: Date, default: Date.now }, //thoi gian cho ban giao
-    timePickup: { type: Date, default: Date.now }, //thoi gian nhan hang
-    timeCancel: { type: Date, default: Date.now }, //thoi gian hoan trả
-    timeCompleted: { type: Date, default: Date.now }, //thoi gian hoan thanh
-    timeDelivering: { type: Date, default: Date.now }, //thoi gian giao hang
-    firstCall: {type: Date, default: Date.now},  //thoi gian gọi lan 1
-    secondCall: {type: Date, default: Date.now}, //thoi gian gọi lan 2
-    thirdCall: {type: Date, default: Date.now},  //thoi gian gọi lan 3
+    timeWaiting: { type: Date, timestamps: true}, //thoi gian cho ban giao
+    timePickup: { type: Date}, //thoi gian nhan hang
+    timeCancel: { type: Date}, //thoi gian hoan trả
+    timeCompleted: { type: Date}, //thoi gian hoan thanh
+    timeDelivering: { type: Date}, //thoi gian giao hang
+    firstCall:{ type: Date},  //thoi gian gọi lan 1
+    secondCall: { type: Date}, //thoi gian gọi lan 2
+    thirdCall: { type: Date},  //thoi gian gọi lan 3
         })
 const OderSchema = new mongoose.Schema({
     phoneRev : String, //sdt nguoi gui
@@ -33,7 +33,6 @@ const OderSchema = new mongoose.Schema({
     idShipper: String, //id shipper nhan
     
     time: [timeSchema], //QL thời gian
-},
-    { timestamps: true });
+},);
 
 module.exports = mongoose.model("Oder", OderSchema, "Oder");
