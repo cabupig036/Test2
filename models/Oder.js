@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const timeSchema = new mongoose.Schema({ 
     timeWaiting: { type: Date, timestamps: true}, //thoi gian cho ban giao
-    timePickup: { type: Date}, //thoi gian nhan hang
-    timeCancel: { type: Date}, //thoi gian hoan trả
-    timeCompleted: { type: Date}, //thoi gian hoan thanh
-    timeDelivering: { type: Date}, //thoi gian giao hang
-    firstCall:{ type: Date},  //thoi gian gọi lan 1
-    secondCall: { type: Date}, //thoi gian gọi lan 2
-    thirdCall: { type: Date},  //thoi gian gọi lan 3
+    timePickup: { type: Date, timestamps: true}, //thoi gian nhan hang
+    timeCancel: { type: Date, timestamps: true}, //thoi gian hoan trả
+    timeCompleted: { type: Date, timestamps: true}, //thoi gian hoan thanh
+    timeDelivering: { type: Date, timestamps: true}, //thoi gian giao hang
+    firstCall:{ type: Date, timestamps: true},  //thoi gian gọi lan 1
+    secondCall: { type: Date, timestamps: true}, //thoi gian gọi lan 2
+    thirdCall: { type: Date, timestamps: true},  //thoi gian gọi lan 3
         })
 const OderSchema = new mongoose.Schema({
     phoneRev : String, //sdt nguoi gui

@@ -15,7 +15,7 @@ const authRoute = require("./routes/auth");
 const oderRoute = require("./routes/oder");
 const resetpwdRouter = require("./routes/resetPwd");
 const codRoute = require("./routes/cod");
-
+const postRoute = require("./routes/post");
 
 
 const port = process.env.PORT || 3000;
@@ -54,6 +54,7 @@ app.use("/api/staff", staffRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/oder", oderRoute);
 app.use("/api/cod", codRoute);
+app.use("/api/post", postRoute);
 app.use("/api/resetpwd", resetpwdRouter);
 app.use("/api/image", ImageRouter);
 

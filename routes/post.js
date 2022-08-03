@@ -30,7 +30,7 @@ const upload = multer({
 router.get("/allPost", async (req, res) => {
   try {
     const post = await Post.find({});
-    res.status(200).json(blog);
+    res.status(200).json(post);
   } catch (error) {
     res.status(404).json(err);
   }

@@ -86,7 +86,6 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           if (err) {
             res.status(401).json(err);
           } else {
-
               var timeWaiting = {
                 timeWaiting: new Date(new Date()-3600*1000*(-7)).toISOString(),         
               };
@@ -223,6 +222,7 @@ router.get("/allOder", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
 //Xem Oder by ID
 router.get("/:_id", async (req, res) => {
   try {
@@ -234,6 +234,7 @@ router.get("/:_id", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
 //Xem hang dang giao
 router.get("/allOder/Delivering/:idUser", async (req, res) => {
   try {
@@ -374,14 +375,16 @@ router.put("/updateOder/:_id", async (req, res) => {
   }
 });
 
-
-
 //Hoan thanh
 router.put("/CompletedOder/:_id", async (req, res) => {
   try {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      var timeCompleted = {
+        timeCompleted: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(timeCompleted); 
       oder.status = "Completed";
       oder.save();
       return res.status(200).json({
@@ -399,6 +402,10 @@ router.put("/CancelOder/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      var timeCancel = {
+        timeCancel: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(timeCancel); 
       oder.status = "Canceled";
       oder.save();
       return res.status(200).json({
@@ -416,6 +423,10 @@ router.put("/DeliveringOder/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      var timeDelivering = {
+        timeDelivering: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(timeDelivering); 
       oder.status = "Delivering";
       oder.idShipper = req.body.idShipper,
       oder.save();
@@ -435,6 +446,10 @@ router.put("/WaitingOder/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      var timeWaiting = {
+        timeWaiting: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(timeWaiting); 
       oder.status = "Waiting";
       oder.save();
       return res.status(200).json({
@@ -452,6 +467,10 @@ router.put("/Pickup/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
+      var timePickup = {
+        timePickup: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(timePickup); 
       oder.status = "Pickup";
       oder.save();
       return res.status(200).json({
@@ -797,14 +816,25 @@ router.get("/History/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
-      var history = oder.time.find(o => o.timeWaiting);
-      console.log(history);
-      res.status(200).json(history);
+      var history = oder.time.forEach(history => console.log(history));
+      res.status(200).json({
+        message: "History in console log"
+      });
     });
   } catch (error) {
     res.status(404).json(error);
   }
 });
+
+// //Gọi lần 1
+// router.put("/setStCall/:_id", async (req, res) => {
+//   try {
+
+     
+//   } catch (error) {
+//     res.status(404).json("Fail");
+//   }
+// });
 
 
 

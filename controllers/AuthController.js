@@ -96,7 +96,10 @@ exports.signinStaff = (req, res) => {
                         });
                     }
                     //check password
-                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    var passwordIsValid = bcrypt.compareSync(
+                        req.body.passwordHash,
+                        shipper.passwordHash
+                    );
                     if (!passwordIsValid) {
                         return res.send({
                             message: "Invalid Password!"
@@ -138,7 +141,10 @@ exports.signinStaff = (req, res) => {
                         });
                     }
                     //check password
-                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    var passwordIsValid = bcrypt.compareSync(
+                        req.body.passwordHash,
+                        admin.passwordHash
+                    );
                     if (!passwordIsValid) {
                         return res.send({
                             message: "Invalid Password!"
@@ -180,7 +186,10 @@ exports.signinStaff = (req, res) => {
                         });
                     }
                     //check password
-                    var passwordIsValid = bcrypt.hashSync(req.body.passwordHash, 8)
+                    var passwordIsValid = bcrypt.compareSync(
+                        req.body.passwordHash,
+                        admin.passwordHash
+                    );
                     if (!passwordIsValid) {
                         return res.send({
                             message: "Invalid Password!"

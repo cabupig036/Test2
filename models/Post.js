@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const AdminSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
     Address : String, //dia chi
     namePost : String, //ten buu cuc
 },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Admin", AdminSchema, "Admin");
+module.exports = mongoose.model("Post", PostSchema, "Post");
