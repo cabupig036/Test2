@@ -5,6 +5,7 @@ const CODSchema = new mongoose.Schema({
     NameBank  : String, //ten ngan hang
     nameHolder  : String, //nguoi chu the
     Price  : String, //tien nhan được
+    state  : String, //tien da chuyen
     idUser: String, // id nguoi so huu the
 },
 { timestamps: true }

@@ -28,6 +28,34 @@ router.get("/allCOD", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
+//Xem đã COD
+router.get("/CODED", async (req, res) => {
+  try {
+    const cod = await COD.find({
+      status: {
+        $eq: "Đã COD"
+      }
+    });
+    res.status(200).json(cod);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+//Xem chưa COD
+router.get("/NONECOD", async (req, res) => {
+  try {
+    const cod = await COD.find({
+      status: {
+        $eq: "Chưa COD"
+      }
+    });
+    res.status(200).json(cod);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
 //Xem COD bang ID
 router.get("/:idUser", async (req, res) => {
   try {
