@@ -811,8 +811,7 @@ router.get("/allOder/Waiting/", async (req, res) => {
 
 //History
 router.get("/History/:_id", async (req, res) => {
-  try {
-    
+  try { 
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
@@ -826,15 +825,25 @@ router.get("/History/:_id", async (req, res) => {
   }
 });
 
-// //Gọi lần 1
-// router.put("/setStCall/:_id", async (req, res) => {
-//   try {
-
-     
-//   } catch (error) {
-//     res.status(404).json("Fail");
-//   }
-// });
+//Update cuộc gọi
+router.put("/setCall/:_id", async (req, res) => {
+  try {
+    Oder.findOne({
+      _id: req.params._id
+    }).exec((err, oder) => {
+      var Call = {
+        Call: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+      };
+      oder.time.push(Call); 
+      oder.save();
+      return res.status(200).json({
+        message: "Call User Success"
+      })
+    });
+  } catch (error) {
+    res.status(404).json("Fail");
+  }
+});
 
 
 

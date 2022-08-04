@@ -5,9 +5,7 @@ const timeSchema = new mongoose.Schema({
     timeCancel: { type: Date, timestamps: true}, //thoi gian hoan trả
     timeCompleted: { type: Date, timestamps: true}, //thoi gian hoan thanh
     timeDelivering: { type: Date, timestamps: true}, //thoi gian giao hang
-    firstCall:{ type: Date, timestamps: true},  //thoi gian gọi lan 1
-    secondCall: { type: Date, timestamps: true}, //thoi gian gọi lan 2
-    thirdCall: { type: Date, timestamps: true},  //thoi gian gọi lan 3
+    Call:{ type: Date, timestamps: true},  //thoi gian gọi lan 1
         })
 const OderSchema = new mongoose.Schema({
     phoneRev : String, //sdt nguoi gui
