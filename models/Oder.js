@@ -27,6 +27,7 @@ const OderSchema = new mongoose.Schema({
     totalWeight: String, //tong khoi luong
     optionSend: String, //hinh thưc gửi (bỏ)
     orderNature: String, //Tinh chat don hang
+    namePost: String, //Tinh chat don hang
     idUser: String, //id nguoi gui
     idShipper: String, //id shipper nhan
     

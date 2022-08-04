@@ -3,6 +3,7 @@ const router = require("express").Router();
 const Users = require("../models/User");
 const Shipper = require("../models/Shipper");
 const Oder = require("../models/Oder");
+const Post = require("../models/Post");
 const sendMail = require("../common/email");
 const Image = require("../models/Image");
 var jwt = require("jsonwebtoken");
@@ -17,7 +18,10 @@ const multer = require("multer");
 const fs = require('fs');
 const path = require('path');
 const User = require("../models/User");
-const { time } = require("console");
+const {
+  time
+} = require("console");
+const { exec } = require("child_process");
 //Storage
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -44,24 +48,24 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           message: "Update Failed"
         });
       }
-    upload(req, res, (err) => {
-      if (err) {
-        return res.status(401).json(err);
-      }
-      const img = {
-        imgName: req.file.originalname,
-        image: {
-          data: fs.readFileSync(path.join('img/' + req.file.filename)),
-          contentType: 'image/png'
-        }
-      }
-      Image.create(img, (err, item) => {
+      upload(req, res, (err) => {
         if (err) {
-          res.status(401).json(err);
-        } else {
-          item.save();
+          return res.status(401).json(err);
         }
-      });
+        const img = {
+          imgName: req.file.originalname,
+          image: {
+            data: fs.readFileSync(path.join('img/' + req.file.filename)),
+            contentType: 'image/png'
+          }
+        }
+        Image.create(img, (err, item) => {
+          if (err) {
+            res.status(401).json(err);
+          } else {
+            item.save();
+          }
+        });
         let newOder = {
           phoneRev: req.body.phoneRev,
           nameRev: req.body.nameRev,
@@ -80,18 +84,20 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           totalWeight: req.body.totalWeight,
           optionSend: req.body.optionSend,
           orderNature: req.body.orderNature,
+          namePost: req.body.namePost,
           idUser: user._id,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
             res.status(401).json(err);
           } else {
-              var timeWaiting = {
-                timeWaiting: new Date(new Date()-3600*1000*(-7)).toISOString(),         
-              };
-            oder.time.push(timeWaiting); 
+            var timeWaiting = {
+              timeWaiting: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
+            };
+            oder.time.push(timeWaiting);
             console.log(timeWaiting)
             oder.save();
+
             function sendOder(newOder) {
               return `<table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
                       <tbody>
@@ -205,9 +211,9 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
             }
           }
         });
+      })
     })
-  })
- } catch (error) {
+  } catch (error) {
     res.status(404).json(error);
     console.log(error);
   }
@@ -349,22 +355,22 @@ router.put("/updateOder/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-      oder.phoneRev= req.body.phoneRev,
-      oder.nameRev= req.body.nameRev,
-      oder.city= req.body.city,
-      oder.district= req.body.district,
-      oder.ward= req.body.ward,
-      oder.address= req.body.address,
-      oder.addressDetail= req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
-      oder.cod= req.body.cod,
-      oder.price= req.body.price,
-      oder.productImg= "http://localhost:3000/api/image/" + req.file.originalname,
-      oder.Note= req.body.Note,
-      oder.optionsPayment= req.body.optionsPayment,
-      oder.status= req.body.status,
-      oder.collectMoney= req.body.collectMoney,
-      oder.totalWeight= req.body.totalWeight,
-      oder.save();
+      oder.phoneRev = req.body.phoneRev,
+        oder.nameRev = req.body.nameRev,
+        oder.city = req.body.city,
+        oder.district = req.body.district,
+        oder.ward = req.body.ward,
+        oder.address = req.body.address,
+        oder.addressDetail = req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
+        oder.cod = req.body.cod,
+        oder.price = req.body.price,
+        oder.productImg = "http://localhost:3000/api/image/" + req.file.originalname,
+        oder.Note = req.body.Note,
+        oder.optionsPayment = req.body.optionsPayment,
+        oder.status = req.body.status,
+        oder.collectMoney = req.body.collectMoney,
+        oder.totalWeight = req.body.totalWeight,
+        oder.save();
       return res.status(200).json({
         message: "Update Completely"
       });
@@ -382,11 +388,20 @@ router.put("/CompletedOder/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var timeCompleted = {
-        timeCompleted: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        timeCompleted: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timeCompleted); 
+      oder.time.push(timeCompleted);
       oder.status = "Completed";
       oder.save();
+
+
+      Shipper.findOne({
+        idShipper: req.body.idShipper
+      }).exec((err, shipper) => {
+        shipper.totalOder++;
+        shipper.save();
+
+      });
       return res.status(200).json({
         message: "Completed"
       })
@@ -403,9 +418,9 @@ router.put("/CancelOder/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var timeCancel = {
-        timeCancel: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        timeCancel: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timeCancel); 
+      oder.time.push(timeCancel);
       oder.status = "Canceled";
       oder.save();
       return res.status(200).json({
@@ -424,12 +439,12 @@ router.put("/DeliveringOder/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var timeDelivering = {
-        timeDelivering: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        timeDelivering: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timeDelivering); 
+      oder.time.push(timeDelivering);
       oder.status = "Delivering";
       oder.idShipper = req.body.idShipper,
-      oder.save();
+        oder.save();
       return res.status(200).json({
         message: "Delivering"
       })
@@ -447,9 +462,9 @@ router.put("/WaitingOder/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var timeWaiting = {
-        timeWaiting: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        timeWaiting: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timeWaiting); 
+      oder.time.push(timeWaiting);
       oder.status = "Waiting";
       oder.save();
       return res.status(200).json({
@@ -468,9 +483,9 @@ router.put("/Pickup/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var timePickup = {
-        timePickup: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        timePickup: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timePickup); 
+      oder.time.push(timePickup);
       oder.status = "Pickup";
       oder.save();
       return res.status(200).json({
@@ -811,15 +826,16 @@ router.get("/allOder/Waiting/", async (req, res) => {
 
 //History
 router.get("/History/:_id", async (req, res) => {
-  try { 
-    Oder.findOne({
+  try {
+    const oder = await Oder.find({
       _id: req.params._id
-    }).exec((err, oder) => {
-      var history = oder.time.forEach(history => console.log(history));
-      res.status(200).json({
-        message: "History in console log"
-      });
     });
+    oder.forEach((element) => {
+      console.log(element.time);
+      res.status(200).json(element.time);
+    });
+
+
   } catch (error) {
     res.status(404).json(error);
   }
@@ -832,9 +848,9 @@ router.put("/setCall/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, oder) => {
       var Call = {
-        Call: new Date(new Date()-3600*1000*(-7)).toISOString(),         
+        Call: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(Call); 
+      oder.time.push(Call);
       oder.save();
       return res.status(200).json({
         message: "Call User Success"
@@ -845,4 +861,69 @@ router.put("/setCall/:_id", async (req, res) => {
   }
 });
 
+//Xem hang theo buu cuc
+router.get("/allOder/Post/:namePost", async (req, res) => {
+  try {
+    const oder = await Oder.find({
+      namePost: req.params.namePost
+    });
+    res.status(200).json(oder);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem don hang shipper da giao trong 1 thang
+router.get("/allOder/Month/:idShipper", async (req, res) => {
+  try {
+    Oder.find({
+      idShipper: req.params.idShipper
+    }).exec((err, oder) => {
+          Oder.find({ 'time.timeCompleted' : req.body.thang  }, 
+          { timeCompleted: 
+              { $elemMatch : 
+                 { 
+                    timeCompleted: req.body.thang 
+                 } 
+              } 
+          }, function (err, oder) {
+      if (oder) {
+          res.status(200).json(oder);
+      } else {
+        res.status(200).json("Not found");
+      }
+
+      });
+    })
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+//Xem don hang User da giao trong 1 thang
+router.get("/allOder/Month/:idUser", async (req, res) => {
+  try {
+    Oder.find({
+      idUser: req.params.idUser
+    }).exec((err, oder) => {
+          Oder.find({ 'time.timeCompleted' : req.body.thang  }, 
+          { timeCompleted: 
+              { $elemMatch : 
+                 { 
+                    timeCompleted: req.body.thang 
+                 } 
+              } 
+          }, function (err, oder) {
+      if (oder) {
+          res.status(200).json(oder);
+      } else {
+        res.status(200).json("Not found");
+      }
+
+      });
+    })
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
 module.exports = router;

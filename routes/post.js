@@ -26,7 +26,7 @@ const upload = multer({
   storage: Storage
 }).single('image');
 
-//Xem all Blog
+//Xem all Post  
 router.get("/allPost", async (req, res) => {
   try {
     const post = await Post.find({});
@@ -35,5 +35,21 @@ router.get("/allPost", async (req, res) => {
     res.status(404).json(err);
   }
 });
-
+//Thêm Bưu Cục
+router.get("/allPost", async (req, res) => {
+  try {
+    const post = await Post.find({});
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json(err);
+  }
+});//Xem all Blog
+router.get("/allPost", async (req, res) => {
+  try {
+    const post = await Post.find({});
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json(err);
+  }
+});
 module.exports = router;

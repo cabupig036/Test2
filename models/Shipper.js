@@ -6,6 +6,7 @@ const ShipperSchema = new mongoose.Schema({
     gmailShipper  : String, //gmail shipper
     phoneShipper  : String, //sdt shipper
     profilePictureShipper  : String, //hình ảnh
+    totalOder  : String,
     Number:String, //MS shipper
 },
 { timestamps: true }
