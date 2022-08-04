@@ -390,11 +390,14 @@ router.put("/CompletedOder/:_id", async (req, res) => {
       var timeCompleted = {
         timeCompleted: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
+      var monthComplete = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+
       oder.time.push(timeCompleted);
+      oder.month = monthComplete;
       oder.status = "Completed";
       oder.save();
-
-
+console.log(timeCompleted)
+console.log(oder.month)
       Shipper.findOne({
         idShipper: req.body.idShipper
       }).exec((err, shipper) => {
@@ -879,13 +882,8 @@ router.get("/allOder/Month/:idShipper", async (req, res) => {
     Oder.find({
       idShipper: req.params.idShipper
     }).exec((err, oder) => {
-          Oder.find({ 'time.timeCompleted' : req.body.thang  }, 
-          { timeCompleted: 
-              { $elemMatch : 
-                 { 
-                    timeCompleted: req.body.thang 
-                 } 
-              } 
+          Oder.find({
+            month: req.body.monthCompleted
           }, function (err, oder) {
       if (oder) {
           res.status(200).json(oder);
@@ -906,13 +904,8 @@ router.get("/allOder/Month/:idUser", async (req, res) => {
     Oder.find({
       idUser: req.params.idUser
     }).exec((err, oder) => {
-          Oder.find({ 'time.timeCompleted' : req.body.thang  }, 
-          { timeCompleted: 
-              { $elemMatch : 
-                 { 
-                    timeCompleted: req.body.thang 
-                 } 
-              } 
+          Oder.find({
+            month: req.body.monthCompleted
           }, function (err, oder) {
       if (oder) {
           res.status(200).json(oder);
@@ -926,4 +919,6 @@ router.get("/allOder/Month/:idUser", async (req, res) => {
     res.status(404).json(error);
   }
 });
+
+
 module.exports = router;

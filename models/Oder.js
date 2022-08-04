@@ -28,6 +28,7 @@ const OderSchema = new mongoose.Schema({
     optionSend: String, //hinh thưc gửi (bỏ)
     orderNature: String, //Tinh chat don hang
     namePost: String, //Tinh chat don hang
+    month: String, 
     idUser: String, //id nguoi gui
     idShipper: String, //id shipper nhan
     
