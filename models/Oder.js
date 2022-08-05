@@ -31,6 +31,7 @@ const OderSchema = new mongoose.Schema({
     month: String, 
     idUser: String, //id nguoi gui
     idShipper: String, //id shipper nhan
+    idCOD: String, 
     
     time: [timeSchema], //QL thời gian
 },);

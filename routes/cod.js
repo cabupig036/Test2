@@ -59,8 +59,8 @@ router.get("/NONECOD", async (req, res) => {
 //Xem COD bang ID
 router.get("/:idUser", async (req, res) => {
   try {
-    const cod = await COD.find({ 
-      idUser : req.params.idUser
+    const cod = await COD.find({
+      idUser: req.params.idUser
     });
     res.status(200).json(cod);
   } catch (error) {
@@ -128,12 +128,13 @@ router.post("/updateCOD/:_id", async (req, res) => {
         });
       }
       let newBank = {
-        idUser : req.body.idUser,
-        gmailUser : req.body.gmailUser,
-        AccountNumber : req.body.AccountNumber,
-        NameBank : req.body.NameBank,
-        nameHolder : req.body.nameHolder,
-        Price : req.body.Price,
+        idCOD: req.body.idUser,
+        idUser: req.body.idUser,
+        gmailUser: req.body.gmailUser,
+        AccountNumber: req.body.AccountNumber,
+        NameBank: req.body.NameBank,
+        nameHolder: req.body.nameHolder,
+        Price: req.body.Price,
       };
       COD.create(newBank, (err, banks) => {
         if (err) {
@@ -144,10 +145,41 @@ router.post("/updateCOD/:_id", async (req, res) => {
         }
       });
     })
-   } catch (error) {
-      res.status(404).json(error);
-      console.log(error);
-    }
-  });
+  } catch (error) {
+    res.status(404).json(error);
+    console.log(error);
+  }
+});
 
+
+//Chap nhan doi xoat
+router.put("/acceptCOD/:_id", async (req, res) => {
+  try {
+    COD.findOne({
+      _id: req.params._id
+    }).exec((err, cod) => {
+      if (err) {
+        res.json({
+          message: "Update Failed"
+        });
+      }
+      if (cod.priceCOD > req.body.money) {
+        cod.status = "Đã COD",
+          cod.priceCOD = (cod.priceCOD - req.body.money)
+        cod.save();
+        return res.status(200).json({
+          message: "Update Completely"
+        });
+      }
+      else{
+        res.status(404).json({
+          message : "Not enough money"
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json(error);
+  }
+});
 module.exports = router;

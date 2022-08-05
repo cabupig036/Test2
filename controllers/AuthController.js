@@ -8,6 +8,7 @@ const Admin = require("../models/Admin");
 //Register User
 exports.signup = (req, res) => {
     const user = new User({
+        idUser: req.body.Username,
         Username: req.body.Username,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,

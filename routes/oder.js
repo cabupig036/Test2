@@ -22,6 +22,7 @@ const {
   time
 } = require("console");
 const { exec } = require("child_process");
+const COD = require("../models/COD");
 //Storage
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -86,18 +87,19 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           orderNature: req.body.orderNature,
           namePost: req.body.namePost,
           idUser: user._id,
+          idCOD: user._id,
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
             res.status(401).json(err);
-          } else {
+          } 
+          else {
             var timeWaiting = {
               timeWaiting: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
             };
             oder.time.push(timeWaiting);
             console.log(timeWaiting)
             oder.save();
-
             function sendOder(newOder) {
               return `<table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
                       <tbody>
@@ -206,8 +208,7 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
 
 
             } catch (error) {
-
-              res.status(500).json(user);
+              res.status(500).json("Fail");
             }
           }
         });
@@ -396,15 +397,22 @@ router.put("/CompletedOder/:_id", async (req, res) => {
       oder.month = monthComplete;
       oder.status = "Completed";
       oder.save();
-console.log(timeCompleted)
-console.log(oder.month)
+
+      COD.findOne({
+        idCOD: req.body.idUser
+      }).exec((err, cod) => {
+        cod.priceCOD += 20000 ;
+        cod.save();
+      });
+
       Shipper.findOne({
         idShipper: req.body.idShipper
       }).exec((err, shipper) => {
         shipper.totalOder++;
         shipper.save();
-
       });
+
+      
       return res.status(200).json({
         message: "Completed"
       })
