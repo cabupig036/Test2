@@ -114,7 +114,24 @@ router.put("/updateBlog/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }         
-      else {
+      upload(req, res, (err) => {
+        if (err) {
+          return res.status(401).json(err);
+        }
+        const img = {
+          imgName: req.file.originalname,
+          image: {
+            data: fs.readFileSync(path.join('img/' + req.file.filename)),
+            contentType: 'image/png'
+          }
+        }
+        Image.create(img, (err, item) => {
+          if (err) {
+            res.status(401).json(err);
+          } else {
+            item.save();
+          }
+        });
         blog.contentBlog = req.body.contentBlog,
         blog.dateBlog = req.body.dateBlog,
         blog.imageBlog = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
@@ -123,7 +140,7 @@ router.put("/updateBlog/:_id", async (req, res) => {
             return res.status(200).json({
               message: "Update Completely"
             });
-          }
+        });
     });
   } catch (error) {
     console.log(error);
