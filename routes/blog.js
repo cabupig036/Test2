@@ -113,15 +113,7 @@ router.put("/updateBlog/:_id", async (req, res) => {
         res.json({
           message: "Update Failed"
         });
-      }       
-      if (req.body.contentBlog == undefined ||
-        req.body.dateBlog == undefined || 
-        req.body.imageBlog == undefined ||
-        req.body.titleBlog == undefined) {
-       return res.json({
-         message: "Thông tin rỗng hoặc không hợp lệ"
-       });
-     } 
+      }         
       else {
         blog.contentBlog = req.body.contentBlog,
         blog.dateBlog = req.body.dateBlog,
