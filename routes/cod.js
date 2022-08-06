@@ -163,9 +163,17 @@ router.put("/acceptCOD/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
+      var timeCOD = {
+        timeCOD: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
+        money: req.body.money,
+      };
+      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
       if (cod.priceCOD > req.body.money) {
+        cod.time.push(timeCOD);
+        cod.month = monthCOD;
         cod.status = "Đã COD",
-          cod.priceCOD = (cod.priceCOD - req.body.money)
+        cod.priceCOD = (cod.priceCOD - req.body.money)
+
         cod.save();
         return res.status(200).json({
           message: "Update Completely"
@@ -179,6 +187,30 @@ router.put("/acceptCOD/:_id", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(404).json(error);
+  }
+});
+
+//Xem COD User trong 1 thang
+router.get("/allCOD/Month/:idUser", async (req, res) => {
+  try {
+    COD.find({
+      idUser: req.params.idUser
+    }).exec((err, cod) => {
+          COD.find({
+            month: req.body.monthCOD
+          }, function (err, cod) {
+      if (cod) {
+        cod.forEach((element) => {
+          res.status(200).json(element.time);
+        });
+      } else {
+        res.status(200).json("Not found");
+      }
+
+      });
+    })
+  } catch (error) {
     res.status(404).json(error);
   }
 });

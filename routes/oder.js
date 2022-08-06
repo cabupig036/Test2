@@ -77,17 +77,17 @@ router.post("/insertOder/:gmailUser", async (req, res) => {
           addressDetail: req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
           cod: req.body.cod,
           price: req.body.price,
-          productImg: "http://localhost:3000/api/image/" + req.file.originalname,
+          productImg: "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
           Note: req.body.Note,
           optionsPayment: req.body.optionsPayment,
           status: "Waiting",
           collectMoney: req.body.collectMoney,
           totalWeight: req.body.totalWeight,
           optionSend: req.body.optionSend,
-          orderNature: req.body.orderNature,
-          namePost: req.body.namePost,
-          idUser: user._id,
-          idCOD: user._id,
+          orderNature: req.body.orderNature, // tính chất đơn hàng (dễ vỡ, hàng quý ...)
+          namePost: req.body.namePost, //tên bưu cục gửi
+          idUser: user._id, //auto
+          idCOD: user._id, //auto
         };
         Oder.create(newOder, (err, oder) => {
           if (err) {
@@ -365,7 +365,7 @@ router.put("/updateOder/:_id", async (req, res) => {
         oder.addressDetail = req.body.address + " " + req.body.ward + " " + req.body.district + " " + req.body.city,
         oder.cod = req.body.cod,
         oder.price = req.body.price,
-        oder.productImg = "http://localhost:3000/api/image/" + req.file.originalname,
+        oder.productImg = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
         oder.Note = req.body.Note,
         oder.optionsPayment = req.body.optionsPayment,
         oder.status = req.body.status,

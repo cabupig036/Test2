@@ -7,10 +7,6 @@ router.post("/", async (req, res) => {
     try {
 
         function sendPassword(newPass) {
-            // https://www.bootdey.com/snippets/view/Basic-table-email-template
-
-
-
             return `<table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
                 <tbody>
                     <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">

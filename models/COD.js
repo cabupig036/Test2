@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+const timeSchema = new mongoose.Schema({ 
+    timeCOD: { type: Date, timestamps: true}, //thoi gian COD
+    money : String
+        })
 const CODSchema = new mongoose.Schema({
     gmailUser: String, //gmail
     AccountNumber  : String, //STK
@@ -6,7 +10,9 @@ const CODSchema = new mongoose.Schema({
     nameHolder  : String, //nguoi chu the
     priceCOD  : Number, //tien nhan được
     status  : String, //trạng thái
+    month  : String, //trạng thái
     idUser: String, // id nguoi so huu the
+    time: [timeSchema], //QL thời gian
 },
 { timestamps: true }
 );

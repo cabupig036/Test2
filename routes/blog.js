@@ -83,7 +83,7 @@ router.post("/insertBlog", async (req, res) => {
       let newBlog = {
         contentBlog: req.body.contentBlog,
         dateBlog: req.body.dateBlog,
-        imageBlog: "http://localhost:3000/api/image/" + req.file.originalname,
+        imageBlog: "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
         titleBlog: req.body.titleBlog,
       };
       Blog.create(newBlog, (err, blog) => {
@@ -125,7 +125,7 @@ router.put("/updateBlog/:_id", async (req, res) => {
       else {
         blog.contentBlog = req.body.contentBlog,
         blog.dateBlog = req.body.dateBlog,
-        blog.imageBlog = "http://localhost:3000/api/image/" + req.file.originalname,
+        blog.imageBlog = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
         blog.titleBlog = req.body.titleBlog,
         blog.save();
             return res.status(200).json({

@@ -92,7 +92,7 @@ router.post("/insertShipper", async (req, res) => {
           let newShipper = {
             Number: "SHP" + OTP,
             Shippername: req.body.Shippername,
-            profilePictureShipper: "http://localhost:3000/api/image/" + req.file.originalname,
+            profilePictureShipper: "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
             gmailShipper: req.body.gmailShipper,
             addressShipper: req.body.addressShipper,
             phoneShipper: req.body.phoneShipper,
@@ -160,7 +160,7 @@ router.put("/updateshipper/:_id", async (req, res) => {
             }
           });
           shipper.Shippername = req.body.Shippername,
-          shipper.profilePictureShipper = "http://localhost:3000/api/image/" + req.file.originalname,
+          shipper.profilePictureShipper = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
           shipper.gmailShipper = req.body.gmailShipper,
           shipper.addressShipper = req.body.addressShipper,
           shipper.phoneShipper = req.body.phoneShipper,
