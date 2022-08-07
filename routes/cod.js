@@ -127,22 +127,16 @@ router.put("/updateCOD/:_id", async (req, res) => {
           message: "Update Failed"
         });
       }
-      let newBank = {
-        idCOD: req.body.idUser,
-        idUser: req.body.idUser,
-        gmailUser: req.body.gmailUser,
-        AccountNumber: req.body.AccountNumber,
-        NameBank: req.body.NameBank,
-        nameHolder: req.body.nameHolder,
-        Price: req.body.Price,
-      };
-      COD.create(newBank, (err, banks) => {
-        if (err) {
-          res.status(401).json(err);
-        } else {
-          banks.save();
-          return res.status(200).json("Inserted");
-        }
+        cod.idCOD= req.body.idUser,
+        cod.idUser= req.body.idUser,
+        cod.gmailUser= req.body.gmailUser;
+        cod.AccountNumber= req.body.AccountNumber;
+        cod.NameBank= req.body.NameBank;
+        cod.nameHolder= req.body.nameHolder;
+        cod.Price= req.body.Price;
+        oder.save();
+        return res.status(200).json({
+        message: "Update Completely"
       });
     })
   } catch (error) {
