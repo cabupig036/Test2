@@ -8,11 +8,11 @@ const CODSchema = new mongoose.Schema({
     AccountNumber  : String, //STK
     NameBank  : String, //ten ngan hang
     nameHolder  : String, //nguoi chu the
-    totalCollectionMoney: Number,
-    priceCOD  : Number, //tien nhan được
-    price  : Number,
+    totalCollectionMoney: Number, //tổng tiền phí ship
+    priceCOD  : Number, //tổng tiền thu hộ
+    price  : Number, //số tiền còn lại
     status  : String, //trạng thái
-    month  : String, //trạng thái
+    month  : String, //tháng
     idUser: String, // id nguoi so huu the
     time: [timeSchema], //QL thời gian
 },
