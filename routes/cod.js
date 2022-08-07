@@ -134,7 +134,7 @@ router.put("/updateCOD/:_id", async (req, res) => {
         cod.NameBank= req.body.NameBank;
         cod.nameHolder= req.body.nameHolder;
         cod.Price= req.body.Price;
-        oder.save();
+        cod.save();
         return res.status(200).json({
         message: "Update Completely"
       });
