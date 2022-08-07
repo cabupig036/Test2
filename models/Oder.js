@@ -15,8 +15,8 @@ const OderSchema = new mongoose.Schema({
     ward : String, //huyen,xa
     address : String, //duong 
     addressDetail: String, //dia chi tong hop
-    cod : String, //phi thu ho
-    price : String, //gia tri hang hoa(Bỏ)
+    cod : Number, //phi thu ho
+    price : Number, //gia tri hang hoa(Bỏ)
     productImg : String, //hinh anh don hang
     detailsPro : String, //hinh anh chi tiet (Bỏ)
     Note : String, //ghi chu

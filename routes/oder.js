@@ -401,7 +401,7 @@ router.put("/CompletedOder/:_id", async (req, res) => {
       COD.findOne({
         idCOD: req.body.idUser
       }).exec((err, cod) => {
-        cod.priceCOD += 20000 ;
+        cod.priceCOD += oder.cod;
         cod.save();
       });
 

@@ -117,7 +117,7 @@ router.get("/deleteCOD/:_id", async (req, res) => {
 });
 
 //Sua Cod
-router.post("/updateCOD/:_id", async (req, res) => {
+router.put("/updateCOD/:_id", async (req, res) => {
   try {
     COD.findOne({
       AccountNumber: req.body.AccountNumber
@@ -168,6 +168,7 @@ router.put("/acceptCOD/:_id", async (req, res) => {
         money: req.body.money,
       };
       var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+      
       if (cod.priceCOD > req.body.money) {
         cod.time.push(timeCOD);
         cod.month = monthCOD;

@@ -1,5 +1,6 @@
 const config = require("../config/authconfig");
 const User = require("../models/User");
+const COD = require("../models/User");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const Shipper = require("../models/Shipper");
@@ -8,14 +9,33 @@ const Admin = require("../models/Admin");
 //Register User
 exports.signup = (req, res) => {
     const user = new User({
-        idUser: req.body.Username,
         Username: req.body.Username,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,
         phoneUser: req.body.phoneUser,
         passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
     });
+    const cod = new User({
+        idUser: "",
+        AccountNumber: "",
+        NameBank: "",
+        status: "",
+        priceCOD: "",
+        gmailUser: "",
+    });
     user.save(err => {
+        if (err) {
+            res.status(500).send({
+                message: err
+            });
+            return;
+        } else {
+            res.send({
+                message: "User was registered successfully!"
+            });
+        }
+    });
+    cod.save(err => {
         if (err) {
             res.status(500).send({
                 message: err
