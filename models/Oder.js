@@ -23,12 +23,13 @@ const OderSchema = new mongoose.Schema({
     optionsPayment : String, //hinh thuc thanh toán 
     gmailUserSend: String, //gmail nguoi gửi (Bỏ)
     status : String, //trang thai
-    collectMoney: String, //tien phí ship
+    collectMoney: Number, //tien phí ship
     totalWeight: String, //tong khoi luong
     optionSend: String, //hinh thưc gửi (bỏ)
     orderNature: String, //Tinh chat don hang
     namePost: String, //Tinh chat don hang
-    month: String, 
+    month: String,
+    statusCOD: String,  
     idUser: String, //id nguoi gui
     idShipper: String, //id shipper nhan
     idCOD: String, 

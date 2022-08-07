@@ -402,6 +402,8 @@ router.put("/CompletedOder/:_id", async (req, res) => {
         idCOD: req.body.idUser
       }).exec((err, cod) => {
         cod.priceCOD += oder.cod;
+        cod.totalCollectionMoney += oder.collectMoney;
+        cod.price = cod.priceCOD - cod.totalCollectionMoney;
         cod.save();
       });
 
@@ -428,12 +430,24 @@ router.put("/CancelOder/:_id", async (req, res) => {
     Oder.findOne({
       _id: req.params._id
     }).exec((err, oder) => {
-      var timeCancel = {
-        timeCancel: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
+      var timeCompleted = {
+        timeCompleted: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
       };
-      oder.time.push(timeCancel);
+      var monthComplete = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+
+      oder.time.push(timeCompleted);
+      oder.month = monthComplete;
       oder.status = "Canceled";
       oder.save();
+
+      COD.findOne({
+        idCOD: req.body.idUser
+      }).exec((err, cod) => {
+        cod.totalCollectionMoney += oder.collectMoney;
+        cod.save();
+      });
+
+      
       return res.status(200).json({
         message: "Canceled"
       })

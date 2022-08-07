@@ -22,6 +22,10 @@ exports.signup = (req, res) => {
         status: "",
         priceCOD: "",
         gmailUser: "",
+        nameHolder: "",
+        totalCharge:"",
+        price:"",
+        status:"",
     });
     user.save(err => {
         if (err) {

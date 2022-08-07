@@ -8,7 +8,9 @@ const CODSchema = new mongoose.Schema({
     AccountNumber  : String, //STK
     NameBank  : String, //ten ngan hang
     nameHolder  : String, //nguoi chu the
+    totalCollectionMoney: Number,
     priceCOD  : Number, //tien nhan được
+    price  : Number,
     status  : String, //trạng thái
     month  : String, //trạng thái
     idUser: String, // id nguoi so huu the
