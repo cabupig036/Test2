@@ -120,7 +120,7 @@ router.get("/deleteCOD/:_id", async (req, res) => {
 router.put("/updateCOD/:_id", async (req, res) => {
   try {
     COD.findOne({
-      AccountNumber: req.body.AccountNumber
+      _id: req.params._id
     }).exec((err, cod) => {
       if (err) {
         res.json({
