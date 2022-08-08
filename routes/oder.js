@@ -402,8 +402,8 @@ router.put("/CompletedOder/:_id", async (req, res) => {
         idCOD: req.body.idUser
       }).exec((err, cod) => {
         cod.priceCOD += oder.cod;
-        cod.totalCollectionMoney += oder.collectMoney;
-        cod.price = cod.priceCOD - cod.totalCollectionMoney;
+        // cod.totalCollectionMoney += oder.collectMoney;
+        // cod.price = cod.priceCOD - cod.totalCollectionMoney;
         cod.save();
       });
 
@@ -440,12 +440,12 @@ router.put("/CancelOder/:_id", async (req, res) => {
       oder.status = "Canceled";
       oder.save();
 
-      COD.findOne({
-        idCOD: req.body.idUser
-      }).exec((err, cod) => {
-        cod.totalCollectionMoney += oder.collectMoney;
-        cod.save();
-      });
+      // COD.findOne({
+      //   idCOD: req.body.idUser
+      // }).exec((err, cod) => {
+      //   cod.totalCollectionMoney += oder.collectMoney;
+      //   cod.save();
+      // });
 
       
       return res.status(200).json({
