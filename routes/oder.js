@@ -242,96 +242,6 @@ router.get("/:_id", async (req, res) => {
   }
 });
 
-//Xem hang dang giao
-router.get("/allOder/Delivering/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "Delivering"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-//Xem hang hoan thanh
-router.get("/allOder/Completed/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "Completed"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-//Xem hang da huy
-router.get("/allOder/Canceled/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "Canceled"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-//Xem hang chua duoc shipper nhan
-router.get("/allOder/Inventory/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "inventory"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-//Xem hang cho lay
-router.get("/allOder/Pickup/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "Pickup"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-//Xem hang chua duoc shipper nhan
-router.get("/allOder/Waiting/:idUser", async (req, res) => {
-  try {
-    const oder = await Oder.find({
-      idUser: req.params.idUser,
-      status: {
-        $eq: "Waiting"
-      }
-    });
-    res.status(200).json(oder);
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
 //Xoa don
 router.get("/deleteOder/:_id", async (req, res) => {
   try {
@@ -414,7 +324,6 @@ router.put("/CompletedOder/:_id", async (req, res) => {
         shipper.save();
       });
 
-      
       return res.status(200).json({
         message: "Completed"
       })
@@ -526,22 +435,14 @@ router.put("/Pickup/:_id", async (req, res) => {
 //Xem đơn hoàn thành bằng ID của User
 router.get("/CompletedView/:idUser", async (req, res) => {
   try {
-    User.findOne({
-      idUser: req.params.idUser
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Completed"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idUser: req.params.idUser },
+        { status: { $eq: "Completed"} }
+     ]
+      
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
@@ -550,22 +451,14 @@ router.get("/CompletedView/:idUser", async (req, res) => {
 //Xem đơn đã hủy bằng ID của User
 router.get("/CanceledView/:idUser", async (req, res) => {
   try {
-    User.findOne({
-      idUser: req.params.idUser
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Canceled"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idUser: req.params.idUser },
+        { status: { $eq: "Canceled"} }
+     ]
+      
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
@@ -574,22 +467,14 @@ router.get("/CanceledView/:idUser", async (req, res) => {
 //Xem đơn đang giao bằng ID của User
 router.get("/DeliveringView/:idUser", async (req, res) => {
   try {
-    User.findOne({
-      idUser: req.params.idUser
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Delivering"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idUser: req.params.idUser },
+        { status: { $eq: "Delivering"} }
+     ]
+      
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
@@ -598,22 +483,14 @@ router.get("/DeliveringView/:idUser", async (req, res) => {
 //Xem đơn Chờ lay hang bằng ID của User
 router.get("/WaitingView/:idUser", async (req, res) => {
   try {
-    User.findOne({
-      idUser: req.params.idUser
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Waiting"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idUser: req.params.idUser },
+        { status: { $eq: "Waiting"} }
+     ]
+      
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
@@ -622,142 +499,89 @@ router.get("/WaitingView/:idUser", async (req, res) => {
 //Xem đơn Đang chờ bàn giao bằng ID cua User
 router.get("/WaitingForHandoverView/:idUser", async (req, res) => {
   try {
-    User.findOne({
-      idUser: req.params.idUser
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "WaitingForHandover"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idUser: req.params.idUser },
+        { status: { $eq: "Waiting For Hand over"} }
+     ]
+      
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
 });
 //#####################################################################
 //Xem đơn hoàn thành bằng SDT của Shipper
-router.get("/CompletedView/:idShipper", async (req, res) => {
+router.get("/CompletedViews/:idShipper", async (req, res) => {
   try {
-    Shipper.findOne({
-      idShipper: req.params.idShipper
-    }).exec((err, shipper) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Waiting"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idShipper: req.params.idShipper },
+        { status: { $eq: "Completed"} }
+     ]
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
 });
 
 //Xem đơn đã hủy bằng SDT của Shipper
-router.get("/CanceledView/:idShipper", async (req, res) => {
+router.get("/CanceledViews/:idShipper", async (req, res) => {
   try {
-    Shipper.findOne({
-      idShipper: req.params.idShipper
-    }).exec((err, shipper) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Canceled"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idShipper: req.params.idShipper },
+        { status: { $eq: "Canceled"} }
+     ]
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
 });
 
 //Xem đơn đang giao bằng SDT của Shipper
-router.get("/DeliveringView/:idShipper", async (req, res) => {
+router.get("/DeliveringViews/:idShipper", async (req, res) => {
   try {
-    Shipper.findOne({
-      idShipper: req.params.idShipper
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Delivering"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idShipper: req.params.idShipper },
+        { status: { $eq: "Delivering"} }
+     ]
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
 });
 
 //Xem đơn Chờ lay hang bằng SDT của Shipper
-router.get("/WaitingView/:idShipper", async (req, res) => {
+router.get("/WaitingViews/:idShipper", async (req, res) => {
   try {
-    Shipper.findOne({
-      idShipper: req.params.idShipper
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "Waiting"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idShipper: req.params.idShipper },
+        { status: { $eq: "Waiting"} }
+     ]
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
 });
 
 //Xem đơn Đang chờ bàn giao bằng SDT cua Shipper
-router.get("/WaitingForHandoverView/:idShipper", async (req, res) => {
+router.get("/WaitingForHandoverViews/:idShipper", async (req, res) => {
   try {
-    Shipper.findOne({
-      idShipper: req.params.idShipper
-    }).exec((err, users) => {
-      if (err) {
-        res.json({
-          message: "Failed"
-        });
-      } else {
-        const oder = Oder.find({
-          status: {
-            $eq: "WaitingForHandover"
-          }
-        });
-        res.status(200).json(oder);
-      }
+    const oder = await Oder.find({
+      $and: [
+        { idShipper: req.params.idShipper },
+        { status: { $eq: "Waiting For Hand over"} }
+     ]
     });
+    res.status(200).json(oder);
   } catch (error) {
     res.status(404).json(error);
   }
