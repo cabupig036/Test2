@@ -160,25 +160,25 @@ router.put("/updateshipper/:_id", async (req, res) => {
             }
           });
           shipper.Shippername = req.body.Shippername,
-          shipper.profilePictureShipper = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
-          shipper.gmailShipper = req.body.gmailShipper,
-          shipper.addressShipper = req.body.addressShipper,
-          shipper.phoneShipper = req.body.phoneShipper,
-          shipper.save();
-        return res.status(200).json({
-          message: "Update Completely"
-        });
+            shipper.profilePictureShipper = "https://serverluanvan.herokuapp.com/api/image/" + req.file.originalname,
+            shipper.gmailShipper = req.body.gmailShipper,
+            shipper.addressShipper = req.body.addressShipper,
+            shipper.phoneShipper = req.body.phoneShipper,
+            shipper.save();
+          return res.status(200).json({
+            message: "Update Completely"
+          });
         } catch (e) {
           shipper.Shippername = req.body.Shippername,
-          shipper.gmailShipper = req.body.gmailShipper,
-          shipper.addressShipper = req.body.addressShipper,
-          shipper.phoneShipper = req.body.phoneShipper,
-          shipper.save();
-        return res.status(200).json({
-          message: "Update Completely"
-        });
+            shipper.gmailShipper = req.body.gmailShipper,
+            shipper.addressShipper = req.body.addressShipper,
+            shipper.phoneShipper = req.body.phoneShipper,
+            shipper.save();
+          return res.status(200).json({
+            message: "Update Completely"
+          });
         }
-        
+
       })
     });
   } catch (error) {
@@ -190,7 +190,7 @@ router.put("/updateshipper/:_id", async (req, res) => {
 //Sua mật khẩu
 router.put("/updatepwd/:_id", async (req, res) => {
   try {
-    User.findOne({
+    Shipper.findOne({
       _id: req.params._id
     }).exec((err, user) => {
       if (err) {
@@ -208,7 +208,7 @@ router.put("/updatepwd/:_id", async (req, res) => {
           message: "Invalid Password!"
         });
       } else {
-        user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8)
+        user.passwordHash = bcrypt.hashSync(req.body.newPwd, 8);
         user.save();
         return res.status(200).json({
           message: "Update Complete"
@@ -221,4 +221,10 @@ router.put("/updatepwd/:_id", async (req, res) => {
   }
 });
 
+// program to display a text using setTimeout method
+async function greet() {
+  const shipper = await Shipper.updateMany({}, {$set: { totalOder: 0}})
+  console.log('Completed');
+}
+setTimeout(greet, 604800000);
 module.exports = router;
