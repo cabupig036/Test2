@@ -35,23 +35,12 @@ exports.signup = (req, res) => {
             });
             return;
         } else {
-            res.send({
+            res.status(200).send({
                 message: "User was registered successfully!"
             });
         }
     });
-    cod.save(err => {
-        if (err) {
-            res.status(500).send({
-                message: err
-            });
-            return;
-        } else {
-            res.send({
-                message: "User was registered successfully!"
-            });
-        }
-    });
+    cod.save();
 };
 //Login User
 exports.signin = (req, res) => {
