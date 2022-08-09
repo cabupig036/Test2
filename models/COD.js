@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const timeSchema = new mongoose.Schema({ 
     timeCOD: { type: Date, timestamps: true}, //thoi gian COD
-    money : String
+    money : Number
         })
 const CODSchema = new mongoose.Schema({
     gmailUser: String, //gmail
