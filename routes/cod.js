@@ -186,6 +186,46 @@ router.put("/acceptCOD/:_id", async (req, res) => {
   }
 });
 
+//Gui yeu doi xoat
+router.put("/sendCOD/:_id", async (req, res) => {
+  try {
+    COD.findOne({
+      _id: req.params._id
+    }).exec((err, cod) => {
+      if (err) {
+        res.json({
+          message: "Update Failed"
+        });
+      }
+      var timeCOD = {
+        timeCOD: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
+        money: req.body.money,
+      };
+      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+      
+      if (cod.priceCOD > req.body.money) {
+        cod.time.push(timeCOD);
+        cod.month = monthCOD;
+        cod.status = "Chưa COD",
+        cod.priceCOD =  cod.priceCOD
+        cod.price = cod.price
+        cod.totalCollectionMoney = cod.totalCollectionMoney
+
+        cod.save();
+        return res.status(200).json(cod);
+      }
+      else{
+        res.status(404).json({
+          message : "Not enough money"
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json(error);
+  }
+});
+
 //Xem COD User trong 1 thang
 router.get("/allCOD/Month/:idUser", async (req, res) => {
   try {
