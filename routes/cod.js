@@ -168,6 +168,8 @@ router.put("/acceptCOD/:_id", async (req, res) => {
         cod.month = monthCOD;
         cod.status = "Đã COD",
         cod.priceCOD = (cod.priceCOD - req.body.money - cod.totalCollectionMoney)
+        cod.price = 0
+        cod.totalCollectionMoney = 0
 
         cod.save();
         return res.status(200).json(cod.priceCOD, cod.totalCollectionMoney, "5000");
