@@ -1,6 +1,6 @@
 const config = require("../config/authconfig");
 const User = require("../models/User");
-const COD = require("../models/User");
+const COD = require("../models/COD");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const Shipper = require("../models/Shipper");
@@ -15,6 +15,18 @@ exports.signup = (req, res) => {
         phoneUser: req.body.phoneUser,
         passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
     });
+    const cod = new COD({
+        idUser: "",
+        AccountNumber: "",
+        NameBank: "",
+        status: "",
+        priceCOD: "",
+        gmailUser: "",
+        nameHolder: "",
+        totalCharge:"",
+        price:"",
+        status:"",
+    });
     user.save(err => {
         if (err) {
             res.status(500).send({
@@ -27,26 +39,18 @@ exports.signup = (req, res) => {
             });
         }
     });
-    //   let newCOD = {
-    //     gmailUser: "",
-    //     AccountNumber: " ",
-    //     NameBank: " ",
-    //     nameHolder: " ",
-    //     totalCollectionMoney: " ",
-    //     priceCOD: " ",
-    //     price: " ",
-    //     status: " ",
-    //     month: " ",
-    //     idUser: " ", 
-    //   }
-    //   COD.create(newCOD, (err, cod) => {
-    //     if (err) {
-    //       res.status(401).json(err);
-    //     } else {
-    //       cod.save();
-    //       return res.status(200).json("Inserted");
-    //     }
-    //   });
+    cod.save(err => {
+        if (err) {
+            res.status(500).send({
+                message: err
+            });
+            return;
+        } else {
+            res.send({
+                message: "User was registered successfully!"
+            });
+        }
+    });
 };
 //Login User
 exports.signin = (req, res) => {

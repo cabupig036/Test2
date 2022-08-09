@@ -123,35 +123,21 @@ router.put("/updateCOD/:_id", async (req, res) => {
       _id: req.params._id
     }).exec((err, cod) => {
       if (err) {
-        let newCOD = {
-          idUser: req.body.idUser,
-          gmailUser: req.body.gmailUser,
-          AccountNumber: req.body.AccountNumber,
-          NameBank: req.body.NameBank,
-          nameHolder: req.body.nameHolder,
-          Price: req.body.Price,
-        }
-        COD.create(newCOD, (err, cod) => {
-          if (err) {
-            res.status(401).json(err);
-          } else {
-            cod.save();
-            return res.status(200).json("Inserted");
-          }
-        });
-      } else {
-        cod.idCOD = req.body.idUser,
-          cod.idUser = req.body.idUser,
-          cod.gmailUser = req.body.gmailUser;
-        cod.AccountNumber = req.body.AccountNumber;
-        cod.NameBank = req.body.NameBank;
-        cod.nameHolder = req.body.nameHolder;
-        cod.Price = req.body.Price;
-        cod.save();
-        return res.status(200).json({
-          message: "Update Completely"
+        res.json({
+          message: "Update Failed"
         });
       }
+        cod.idCOD= req.body.idUser,
+        cod.idUser= req.body.idUser,
+        cod.gmailUser= req.body.gmailUser;
+        cod.AccountNumber= req.body.AccountNumber;
+        cod.NameBank= req.body.NameBank;
+        cod.nameHolder= req.body.nameHolder;
+        cod.Price= req.body.Price;
+        cod.save();
+        return res.status(200).json({
+        message: "Update Completely"
+      });
     })
   } catch (error) {
     res.status(404).json(error);
@@ -175,21 +161,22 @@ router.put("/acceptCOD/:_id", async (req, res) => {
         timeCOD: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
         money: req.body.money,
       };
-      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth() + 1;
-
+      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+      
       if (cod.priceCOD > req.body.money) {
         cod.time.push(timeCOD);
         cod.month = monthCOD;
         cod.status = "Đã COD",
-          cod.priceCOD = (cod.priceCOD - req.body.money - cod.totalCollectionMoney)
+        cod.priceCOD = (cod.priceCOD - req.body.money - cod.totalCollectionMoney)
         cod.price = 0
         cod.totalCollectionMoney = 0
 
         cod.save();
         return res.status(200).json(cod.priceCOD, cod.totalCollectionMoney, "5000");
-      } else {
+      }
+      else{
         res.status(404).json({
-          message: "Not enough money"
+          message : "Not enough money"
         });
       }
     });
@@ -214,21 +201,22 @@ router.put("/sendCOD/:_id", async (req, res) => {
         timeCOD: new Date(new Date() - 3600 * 1000 * (-7)).toISOString(),
         money: req.body.money,
       };
-      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth() + 1;
-
+      var monthCOD = new Date(new Date() - 3600 * 1000 * (-7)).getMonth()+1;
+      
       if (cod.priceCOD > req.body.money) {
         cod.time.push(timeCOD);
         cod.month = monthCOD;
         cod.status = "Chưa COD",
-          cod.priceCOD = cod.priceCOD
+        cod.priceCOD =  cod.priceCOD
         cod.price = cod.price
         cod.totalCollectionMoney = cod.totalCollectionMoney
 
         cod.save();
         return res.status(200).json(cod);
-      } else {
+      }
+      else{
         res.status(404).json({
-          message: "Not enough money"
+          message : "Not enough money"
         });
       }
     });
@@ -244,16 +232,16 @@ router.get("/allCOD/Month/:idUser", async (req, res) => {
     COD.find({
       idUser: req.params.idUser
     }).exec((err, cod) => {
-      COD.find({
-        month: req.body.monthCOD
-      }, function (err, cod) {
-        if (cod) {
-          cod.forEach((element) => {
-            res.status(200).json(element.time);
-          });
-        } else {
-          res.status(200).json("Not found");
-        }
+          COD.find({
+            month: req.body.monthCOD
+          }, function (err, cod) {
+      if (cod) {
+        cod.forEach((element) => {
+          res.status(200).json(element.time);
+        });
+      } else {
+        res.status(200).json("Not found");
+      }
 
       });
     })
