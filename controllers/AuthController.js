@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
         NameBank: "",
         status: "",
         priceCOD: "",
-        gmailUser: "",
+        gmailUser: req.body.gmailUser,
         nameHolder: "",
         totalCharge:"",
         price:"",
