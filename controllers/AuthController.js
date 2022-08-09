@@ -9,6 +9,7 @@ const Admin = require("../models/Admin");
 //Register User
 exports.signup = (req, res) => {
     const user = new User({
+        
         Username: req.body.Username,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,
@@ -16,7 +17,7 @@ exports.signup = (req, res) => {
         passwordHash: bcrypt.hashSync(req.body.passwordHash, 8)
     });
     const cod = new COD({
-        idUser: "",
+        idUser: user._id,
         AccountNumber: "",
         NameBank: "",
         status: "",
