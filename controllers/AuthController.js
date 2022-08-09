@@ -9,7 +9,6 @@ const Admin = require("../models/Admin");
 //Register User
 exports.signup = (req, res) => {
     const user = new User({
-        
         Username: req.body.Username,
         gmailUser: req.body.gmailUser,
         addressUser: req.body.addressUser,
@@ -20,13 +19,12 @@ exports.signup = (req, res) => {
         idUser: user._id,
         AccountNumber: "",
         NameBank: "",
-        status: "",
-        priceCOD: "",
+        status: "Chưa COD",
+        priceCOD: 0,
         gmailUser: req.body.gmailUser,
-        nameHolder: "",
-        totalCharge:"",
-        price:"",
-        status:"",
+        nameHolder: req.body.Username,
+        totalCharge:0,
+        price:0,
     });
     user.save(err => {
         if (err) {
